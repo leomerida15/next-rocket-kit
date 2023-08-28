@@ -1,0 +1,56 @@
+{
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "name": "next-app-router",
+  "author": "Dimas Leopoldo Mérida Flores",
+  "module": "dist/next-app-router.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/next-app-router.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/next-app-router.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^8.2.6",
+    "husky": "^8.0.3",
+    "rome": "^12.1.3",
+    "size-limit": "^8.2.6",
+    "tsdx": "^0.14.1",
+    "typescript": "^3.9.10"
+  },
+  "dependencies": {
+    "babel-loader": "^9.1.3",
+    "babel-preset-react": "^6.24.1",
+    "next": "^13.4.19",
+    "tslib": "^2.6.2",
+    "yup": "^1.2.0",
+    "zod": "^3.22.2"
+  }
+}
