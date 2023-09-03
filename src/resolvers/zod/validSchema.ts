@@ -11,9 +11,9 @@ export const validSchema = <
 	Schemas: IZodRouteParams<B, C, Q, H, R>["schemas"],
 	req: Parameters<IZodRouteParams<B, C, Q, H, R>["Handler"]>["0"],
 ) => {
-	if (Schemas?.body) {
-		const body = req.getBody();
-		Schemas.body.parse(body);
+	if (Schemas?.headers) {
+		const headers = req.getHeaders();
+		Schemas.headers.parse(headers);
 	}
 
 	if (Schemas?.context) {
@@ -21,13 +21,13 @@ export const validSchema = <
 		Schemas.context.parse(context);
 	}
 
-	if (Schemas?.headers) {
-		const headers = req.getHeaders();
-		Schemas.headers.parse(headers);
-	}
-
 	if (Schemas?.query) {
 		const query = req.getQuery(Object.keys(Schemas.query.shape));
 		Schemas.query.parse(query);
+	}
+
+	if (Schemas?.body) {
+		const body = req.getBody();
+		Schemas.body.parse(body);
 	}
 };
