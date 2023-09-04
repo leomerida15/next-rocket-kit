@@ -1,5 +1,14 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "Keywords": [
+    "next",
+    "zod",
+    "yup",
+    "http-status-codes",
+    "api",
+    "rest",
+    "nextjs"
+  ],
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
