@@ -7,12 +7,6 @@ export interface ICreateRocketParams<K extends ResolverKeys> {
 }
 
 export interface IResolver {
-	ZodResolver: typeof resolverObj.zod;
-	YupResolver: typeof resolverObj.yup;
-}
-
-export type RouteType = IResolver["YupResolver"] | IResolver["ZodResolver"];
-
-export interface ICcreateRocketReturn {
-	Route: RouteType;
+	zod: typeof resolverObj.zod;
+	yup: typeof resolverObj.yup;
 }

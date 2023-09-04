@@ -5,7 +5,3 @@ export const resolverObj = {
 	yup: yupRoute,
 	zod: zodRoute,
 };
-
-export const routeFactory = (key: keyof typeof resolverObj) => {
-	return resolverObj[key];
-};

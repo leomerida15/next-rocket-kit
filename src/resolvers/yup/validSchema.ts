@@ -11,9 +11,9 @@ export const validSchema = <
 	Schemas: IYupRouteParams<B, C, Q, H, R>["schemas"],
 	req: YupReqType<B, C, Q, H, R>,
 ) => {
-	if (Schemas?.body) {
-		const body = req.getBody();
-		Schemas.body.validate(body);
+	if (Schemas?.headers) {
+		const headers = req.getHeaders();
+		Schemas.headers.validate(headers);
 	}
 
 	if (Schemas?.context) {
@@ -21,13 +21,13 @@ export const validSchema = <
 		Schemas.context.validate(context);
 	}
 
-	if (Schemas?.headers) {
-		const headers = req.getHeaders();
-		Schemas.headers.validate(headers);
-	}
-
 	if (Schemas?.query) {
 		const query = req.getQuery(Object.keys(Schemas.query.fields));
 		Schemas.query.validate(query);
+	}
+
+	if (Schemas?.body) {
+		const body = req.getBody();
+		Schemas.body.validate(body);
 	}
 };
