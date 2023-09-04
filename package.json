@@ -1,5 +1,8 @@
 {
   "version": "0.2.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "Keywords": [
     "next",
     "zod",
@@ -9,9 +12,6 @@
     "rest",
     "nextjs"
   ],
-  "license": "MIT",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
   "files": [
     "dist",
     "src"
