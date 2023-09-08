@@ -3,37 +3,40 @@
 
 This package is intended to make it easy to build back-end applications in the framework, **next.js** with, using the **app** directory.
 
-# Index
+## Index
 
-- [Configuration object 🔩🔧.](#configuration-object-)
-- [Tools we offer 🔧🔨.](#tools-we-offer-)
-- [Route Module 🔃.](#route-module-)
-  - [Configuration object for Route.](#configuration-object-for-route)
+  [Configuration object 🔩🔧](#1-configuration-object-)
+  [Tools we offer :hammer_and_wrench:](#2-tools-we-offer-)
 
-- [Http Module 📝.](#http-module-)
-- [OpenAPI Module 📝.](#openapi-module-)
-
-# Configuration object 🔩🔧
+# 1. Configuration object 🔩🔧
 
 This object is used to define types and versions of the tools.
 
 - Default object.
 In the event that the user does not place a configuration object, this will be the object that will be used by default in the kit.
 
-  ```typescript
-  import  { ConfigObject }  from  "next-rocket-kit";
+```typescript
+import  { ConfigObject }  from  "next-rocket-kit";
 
-  const configObjet: ConfigObject = {
-    resolver: "zod",
-    oas: "3.1"
-  }
-    ```
+const configObjet: ConfigObject = {
+  resolver: "zod",
+  oas: "3.1"
+}
+  ```
 
-# Tools we offer 🔧🔨
+- Configuration object fields.
+
+  - resolver: default value "zod" | "yup"
+  Packet to validate data in the Route.
+
+  - oas: default value "3.1"
+  OpenAPI version.
+
+# 2. Tools we offer 🔧🔨
 
 > **Note 🧪:**      It is important to note that we will all be adding new tools to the kit in the future.
 
-## Route Module 🔃
+## Route 🔃
 
 This tool helps to quickly create an endpoint using the **next.js** **API** folder.
 
@@ -108,7 +111,7 @@ graph LR
 A(headers) --> B(context) --> C(query) --> D(body) --> E(Handler) --> F(response)
 ```
 
-## Http Module 📝
+## Module Http 📝
 
 The Http tool will help you manage http status, to better manage and organize your request responses.
 > **Note 📦:** rocket-kit uses the [http-status-codes](https://www.npmjs.com/package/http-status-codes) package
@@ -146,7 +149,7 @@ export  const  GET  =  Route({
 });
   ```
 
-## OpenAPI Module 📝
+## Module OpenAPI 📝
 
    OpenAPI allows you to create a json in openapi "3.0" or "3.1" format, compatible with tools like **swagger**, **postman** and anyone that receives the openapi format.
 > **Note 📦:** rocket-kit uses the [openapi3-ts](https://www.npmjs.com/package/openapi3-ts) package.

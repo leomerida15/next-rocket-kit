@@ -3,11 +3,30 @@ import { resolverObj } from "./resolvers";
 import { ResolverKeys } from "./resolvers/types";
 export * from "./resolvers/types";
 
-export interface ICreateRocketParams<
+/**
+ * Configuration object for the Rocket-kit.
+ *
+ * @export
+ * @abstract
+ * @class ConfigObject
+ * @type { resolver: "zod" | "yup", oas : "3.0" | "3.1"}
+ */
+export declare abstract class ConfigObject<
 	K extends ResolverKeys = "zod",
-	O extends OasKeys = 31,
+	O extends OasKeys = "3.1",
 > {
+	/**
+	 * Packet to validate data in the Route.
+	 * @default "zod"
+	 * @type "zod" | "yup"
+	 */
 	resolver?: K;
+
+	/**
+	 * OpenAPI version.
+	 * @default "3.1"
+	 * @type "3.0" | "3.1"
+	 */
 	oas?: O;
 }
 

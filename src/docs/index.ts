@@ -1,6 +1,6 @@
 import { oas30, oas31 } from "openapi3-ts";
 
 export const Oas = {
-	30: oas30,
-	31: oas31,
+	"3.0": oas30,
+	"3.1": oas31,
 };
