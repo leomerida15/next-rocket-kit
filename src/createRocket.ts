@@ -18,7 +18,7 @@ export const createRocket = <K extends ResolverKeys>(
 
 	const Route = resolverObj[config.resolver];
 
-	const OpenApi = Oas;
+	const OpenApi = Oas[config.oas];
 
 	return { Route, Http, OpenApi };
 };
