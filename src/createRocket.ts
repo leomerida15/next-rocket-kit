@@ -10,7 +10,7 @@ import { Oas } from "./docs";
  * CreateRocket: generates a kit to workr back end in next.js with app folder
  *
  * @param {ConfigObject} { resolver: "zod" | "yup", default "zod" };
- * @returns {} { Route, Http, OpenApi };
+ * @returns {Object} { Route, Http, OpenApi };
  */
 export const createRocket = <K extends ResolverKeys, O extends OasKeys>(
 	params?: ConfigObject<K, O>,
@@ -23,5 +23,3 @@ export const createRocket = <K extends ResolverKeys, O extends OasKeys>(
 
 	return { Route, Http, OpenApi };
 };
-
-const { OpenApi } = createRocket();

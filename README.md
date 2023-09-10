@@ -130,25 +130,25 @@ import  { createRocket }  from  "next-rocket-kit";
 export  const  { Route, Http }  =  createRocket();
   ```
 
-``` typescript
-// "path file" ~ ./src/app/api/route.ts
-import { Route, Http } from '@/libs/rocketKit';
-// End Point GET basic
-export  const  GET  =  Route({
- Handler(req,  reply,  context)  {
-  return  reply.json({
-   message:  Http.ReasonPhrases.OK, // "OK"
+  ``` typescript
+  // "path file" ~ ./src/app/api/route.ts
+  import { Route, Http } from '@/libs/rocketKit';
+  // End Point GET basic
+  export  const  GET  =  Route({
+  Handler(req,  reply,  context)  {
+    return  reply.json({
+    message:  Http.ReasonPhrases.OK, // "OK"
+    },
+    {
+    status:  Http.StatusCodes.OK, // 200
+    });
   },
-  {
-   status:  Http.StatusCodes.OK, // 200
   });
- },
-});
   ```
 
 ## OpenAPI Module 📝
 
-   OpenAPI allows you to create a json in openapi "3.0" or "3.1" format, compatible with tools like **swagger**, **postman** and anyone that receives the openapi format.
+   OpenAPI allows you to create a json in openapi ["3.0"](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md) or ["3.1"](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md) format, compatible with tools like **swagger**, **postman** and anyone that receives the openapi format.
 > **Note 📦:** rocket-kit uses the [openapi3-ts](https://www.npmjs.com/package/openapi3-ts) package.
 
 To define the openapi version you must use the **oas** attribute in the kit configuration object.
@@ -159,4 +159,82 @@ To define the openapi version you must use the **oas** attribute in the kit conf
 
 import  { createRocket }  from  "next-rocket-kit";
 export  const  { Route, Http, OpenApi }  =  createRocket();
+  ```
+
+### OpenApi Example
+
+```typescript
+// "path file" ~ ./libs/rocketKit
+"use server";
+
+import  { createRocket }  from  "next-rocket-kit";
+export  const  { Route, Http, OpenApi }  =  createRocket();
+
+// declare info and openapi version.
+const openApi = OpenApi({
+  openapi: "3.1",
+  info: {
+   title: "example",
+   description: "string",
+   termsOfService: "string",
+   contact: {
+    name: "Author",
+   },
+   license: {
+    name: "MIT",
+   },
+   version: "1.0.0",
+  },
+});
+
+ openApi.addSchema("User", {
+  type: "object",
+  properties: {
+   id: {
+    type: "string",
+   },
+   name: {
+    type: "string",
+   },
+  },
+ });
+
+ openApi.addPath("/items", {
+  description: "manejo de usuarios",
+  post: {
+   description: "obtener usuarios",
+   summary: "obtener usuarios",
+   requestBody: {
+    description: "body",
+    content: {
+     "application/json": {
+      schema: { $ref: "#/components/schemas/User" },
+     },
+    },
+   },
+   responses: {
+    200: {
+     description: "ok",
+     content: {
+      "application/json": {
+       schema: {
+        type: "object",
+        properties: {
+         id: {
+          type: "string",
+         },
+        },
+       },
+      },
+     },
+    },
+   },
+  },
+ });
+
+// return json string
+openApi.getSpecAsJson()
+// or return yml stirng
+openApi.getSpecAsYaml()
+
   ```

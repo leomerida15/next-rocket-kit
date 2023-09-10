@@ -2,6 +2,7 @@ import { OasKeys } from "./docs/types";
 import { resolverObj } from "./resolvers";
 import { ResolverKeys } from "./resolvers/types";
 export * from "./resolvers/types";
+export * from "./docs/types";
 
 /**
  * Configuration object for the Rocket-kit.
@@ -9,7 +10,7 @@ export * from "./resolvers/types";
  * @export
  * @abstract
  * @class ConfigObject
- * @type { resolver: "zod" | "yup", oas : "3.0" | "3.1"}
+ * @type { resolver: "zod" | "yup", oas : "3.0" | "3.1" }
  */
 export declare abstract class ConfigObject<
 	K extends ResolverKeys = "zod",
