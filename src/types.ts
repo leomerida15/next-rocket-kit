@@ -1,8 +1,6 @@
-import { OasKeys } from "./docs/types";
 import { resolverObj } from "./resolvers";
 import { ResolverKeys } from "./resolvers/types";
 export * from "./resolvers/types";
-export * from "./docs/types";
 
 /**
  * Configuration object for the Rocket-kit.
@@ -10,25 +8,15 @@ export * from "./docs/types";
  * @export
  * @abstract
  * @class ConfigObject
- * @type { resolver: "zod" | "yup", oas : "3.0" | "3.1" }
+ * @type { resolver: "zod" | "yup" }
  */
-export declare abstract class ConfigObject<
-	K extends ResolverKeys = "zod",
-	O extends OasKeys = "3.1",
-> {
+export declare abstract class ConfigObject<K extends ResolverKeys = "zod",> {
 	/**
 	 * Packet to validate data in the Route.
 	 * @default "zod"
 	 * @type "zod" | "yup"
 	 */
 	resolver?: K;
-
-	/**
-	 * OpenAPI version.
-	 * @default "3.1"
-	 * @type "3.0" | "3.1"
-	 */
-	oas?: O;
 }
 
 export interface IResolver {

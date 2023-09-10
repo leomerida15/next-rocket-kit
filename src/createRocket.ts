@@ -2,7 +2,6 @@ import { resolverObj } from "./resolvers/resolverObj";
 import { ConfigObject } from "./types";
 import { ResolverKeys } from "./resolvers";
 import { Http } from "./httpStatus";
-import { OasKeys } from "./docs/types";
 import { createConfig } from "./config";
 import { Oas } from "./docs";
 
@@ -12,14 +11,14 @@ import { Oas } from "./docs";
  * @param {ConfigObject} { resolver: "zod" | "yup", default "zod" };
  * @returns {Object} { Route, Http, OpenApi };
  */
-export const createRocket = <K extends ResolverKeys, O extends OasKeys>(
-	params?: ConfigObject<K, O>,
+export const createRocket = <K extends ResolverKeys>(
+	params?: ConfigObject<K>,
 ) => {
 	const config = createConfig(params);
 
 	const Route = resolverObj[config.resolver];
 
-	const OpenApi = Oas[config.oas];
+	const OpenApi = Oas;
 
 	return { Route, Http, OpenApi };
 };
