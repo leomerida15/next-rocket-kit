@@ -10,16 +10,16 @@ import { Oas } from "./docs";
  *
  */
 export const createRocket = <
-	K extends ResolverKeys = "yup",
+	K extends ResolverKeys = "zod",
 	O extends OasKeys = "3.1",
 >(
 	params?: ConfigObject<K, O>,
 ) => {
 	const config = createConfig(params);
 
-	const Route = resolverObj[config.resolver] as K extends "zod"
-		? typeof resolverObj.zod
-		: typeof resolverObj.yup;
+	const Route = resolverObj[config.resolver] as K extends "yup"
+		? typeof resolverObj.yup
+		: typeof resolverObj.zod;
 
 	const OpenApi = Oas[config.oas];
 
