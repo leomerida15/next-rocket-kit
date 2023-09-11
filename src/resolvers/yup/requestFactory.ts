@@ -17,9 +17,13 @@ export const requestFactory = async <
 	Schemas?: IYupSchemasValid<B, C, Q, H, R>,
 ) => {
 	const url = new URL(nativeRequest.url);
-	const body = nativeRequest.body
-		? await nativeRequest.json()
-		: nativeRequest.body;
+	const body = await (async () => {
+		const valid_methods = !["DELETE", "GET"].includes(nativeRequest.method);
+
+		if (!(valid_methods && Schemas?.body)) return {};
+
+		return await nativeRequest.json();
+	})();
 
 	const resp = {
 		getHeaders: headers,
@@ -40,17 +44,7 @@ export const requestFactory = async <
 			});
 			return resQueries;
 		},
-		getBody: (): InferType<B> => {
-			if (
-				body &&
-				!["DELETE", "GET"].includes(nativeRequest.method) &&
-				Schemas?.body
-			) {
-				return body;
-			}
-
-			return {};
-		},
+		getBody: (): InferType<B> => body,
 	};
 
 	return { ...resp, ...nativeRequest } as IYupRequestFactoryResp<B, C, Q>;
