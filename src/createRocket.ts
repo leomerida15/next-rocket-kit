@@ -1,5 +1,5 @@
 import { resolverObj } from "./resolvers/resolverObj";
-import { ConfigObject } from "./types";
+import { ConfigObject, OasKeys } from "./types";
 import { ResolverKeys } from "./resolvers";
 import { Http } from "./httpStatus";
 import { createConfig } from "./config";
@@ -8,15 +8,18 @@ import { Oas } from "./docs";
 /**
  * CreateRocket: generates a kit to workr back end in next.js with app folder
  *
- * @param {ConfigObject} { resolver: "zod" | "yup", default "zod" };
- * @returns {Object} { Route, Http, OpenApi };
  */
-export const createRocket = <K extends ResolverKeys>(
-	params?: ConfigObject<K>,
+export const createRocket = <
+	K extends ResolverKeys = "yup",
+	O extends OasKeys = "3.1",
+>(
+	params?: ConfigObject<K, O>,
 ) => {
 	const config = createConfig(params);
 
-	const Route = resolverObj[config.resolver];
+	const Route = resolverObj[config.resolver] as K extends "zod"
+		? typeof resolverObj.zod
+		: typeof resolverObj.yup;
 
 	const OpenApi = Oas[config.oas];
 

@@ -27,6 +27,7 @@ In the event that the user does not place a configuration object, this will be t
 
   const configObjet: ConfigObject = {
     resolver: "zod",
+    oas: "3.1"
   }
     ```
 
