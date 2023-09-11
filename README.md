@@ -28,7 +28,7 @@ In the event that the user does not place a configuration object, this will be t
   const configObjet: ConfigObject = {
     resolver: "zod",
     oas: "3.1"
-  }
+  };
     ```
 
 # Tools we offer 🔧🔨
@@ -84,24 +84,24 @@ The handler function receives three parameters to handle and control the request
 - **Schema (Schema valid):**
 The schemas attribute allows you to validate the type and format of the data that enters and leaves the **Route**, to handle these validations **Route** is compatible with two possible third party libraries, **"zod"** and **"yup"**. By default, ```createRocketKit()``` uses **"zod"** as the validation library.
 
- ``` typescript
-// "path file" ~ ./src/app/api/route.ts
- import { Route } from '@/libs/rocketKit';
+   ``` typescript
+  // "path file" ~ ./src/app/api/route.ts
+  import { Route } from '@/libs/rocketKit';
 
- // End Point GET basic
- export  const  POST =  Route({
-  schemas: {
-   body: Schema,
-   query: Schema,
-   context: Schema,
-   headers: Schema,
-   response: Schema,
-  },
-  Handler(req,  reply,  context)  {
-   return  reply.json({  message:  "Hello World!"  },  {  status:  201  });
-  },
- });
- ```
+   // End Point GET basic
+  export  const  POST =  Route({
+    schemas: {
+      body: Schema,
+      query: Schema,
+      context: Schema,
+      headers: Schema,
+      response: Schema,
+    },
+    Handler(req,  reply,  context)  {
+      return  reply.json({  message:  "Hello World!"  },  {  status:  201  });
+    },
+  });
+  ```
 
 The Schemas attribute uses a life cycle to execute the validations, the order of that life cycle is as follows.
 
@@ -116,12 +116,12 @@ The Http tool will help you manage http status, to better manage and organize yo
 > **Note 📦:** rocket-kit uses the [http-status-codes](https://www.npmjs.com/package/http-status-codes) package
 
 ``` typescript
-  const Http = {
-    ReasonPhrases,
-    StatusCodes,
-    getReasonPhrase,
-    getStatusCode,
-  };
+const Http = {
+  ReasonPhrases,
+  StatusCodes,
+  getReasonPhrase,
+  getStatusCode,
+};
  ```
 
 ```typescript
@@ -133,19 +133,20 @@ export  const  { Route, Http }  =  createRocket();
   ```
 
   ``` typescript
-  // "path file" ~ ./src/app/api/route.ts
-  import { Route, Http } from '@/libs/rocketKit';
-  // End Point GET basic
-  export  const  GET  =  Route({
-  Handler(req,  reply,  context)  {
-    return  reply.json({
-    message:  Http.ReasonPhrases.OK, // "OK"
+// "path file" ~ ./src/app/api/route.ts
+import { Route, Http } from '@/libs/rocketKit';
+
+// End Point GET basic
+export const GET = Route({
+    Handler(req,  reply,  context)  {
+      return  reply.json({
+        message:  Http.ReasonPhrases.OK, // "OK"
+      },
+      {
+        status:  Http.StatusCodes.OK, // 200
+      });
     },
-    {
-    status:  Http.StatusCodes.OK, // 200
-    });
-  },
-  });
+});
   ```
 
 ## OpenAPI Module 📝
@@ -174,64 +175,64 @@ export  const  { Route, Http, OpenApi }  =  createRocket();
 
 // declare info and openapi version.
 const openApi = OpenApi({
-  openapi: "3.0.3", // or 3.1.0
-  info: {
-   title: "example",
-   description: "string",
-   termsOfService: "string",
-   contact: {
-    name: "Author",
-   },
-   license: {
-    name: "MIT",
-   },
-   version: "1.0.0",
-  },
+    openapi: "3.0.3", // or 3.1.0
+    info: {
+      title: "example",
+      description: "string",
+      termsOfService: "string",
+      contact: {
+        name: "Author",
+      },
+      license: {
+        name: "MIT",
+      },
+      version: "1.0.0",
+    },
 });
 
  openApi.addSchema("User", {
-  type: "object",
-  properties: {
-   id: {
-    type: "string",
-   },
-   name: {
-    type: "string",
-   },
-  },
+    type: "object",
+    properties: {
+      id: {
+        type: "string",
+      },
+      name: {
+        type: "string",
+      },
+    },
  });
 
  openApi.addPath("/items", {
-  description: "return item list",
-  post: {
-   description: "get items",
-   summary: "get items",
-   requestBody: {
-    description: "body",
-    content: {
-     "application/json": {
-      schema: { $ref: "#/components/schemas/User" },
-     },
-    },
-   },
-   responses: {
-    200: {
-     description: "ok",
-     content: {
-      "application/json": {
-       schema: {
-        type: "object",
-        properties: {
-         id: {
-          type: "string",
-         },
+    description: "return item list",
+    post: {
+    description: "get items",
+    summary: "get items",
+    requestBody: {
+      description: "body",
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/User" },
         },
-       },
       },
-     },
     },
-   },
-  },
+    responses: {
+        200: {
+          description: "ok",
+          content: {
+            "application/json": {
+            schema: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
  });
 
 // return json string
@@ -258,19 +259,19 @@ extendZodWithOpenApi(z);
 
 // declare info and openapi version.
 const openApi = OpenApi({
-  openapi: "3.0.3", // or 3.1.0
-  info: {
-   title: "example",
-   description: "string",
-   termsOfService: "string",
-   contact: {
-    name: "Author",
-   },
-   license: {
-    name: "MIT",
-   },
-   version: "1.0.0",
-  },
+    openapi: "3.0.3", // or 3.1.0
+    info: {
+        title: "example",
+        description: "string",
+        termsOfService: "string",
+        version: "1.0.0",
+        contact: {
+          name: "Author",
+        },
+        license: {
+          name: "MIT",
+        },
+    },
 });
 
 const ItemZodSchema = z
