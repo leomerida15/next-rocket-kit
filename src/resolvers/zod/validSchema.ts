@@ -23,7 +23,7 @@ export const validSchema = <
 
 	if (Schemas?.query) {
 		const query = req.getQuery(Object.keys(Schemas.query.shape));
-		Schemas.query.parse(query);
+		if (query) Schemas.query.parse(query);
 	}
 
 	if (Schemas?.body) {

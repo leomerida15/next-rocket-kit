@@ -31,9 +31,9 @@ export const requestFactory = async <
 
 			return { ...context, params };
 		},
-		getQuery: (queriesArray: string[]): TypeOf<Q> => {
+		getQuery: (queriesArray: string[]): TypeOf<Q> | undefined => {
 			//
-			if (nativeRequest.url) return {};
+			if (nativeRequest.url) return undefined;
 
 			const url = new URL(nativeRequest.url);
 

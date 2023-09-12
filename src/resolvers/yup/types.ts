@@ -85,7 +85,7 @@ export interface IYupRequestFactoryResp<
 > extends NextRequest {
 	getHeaders: () => ReturnType<typeof headers>;
 	getContext: () => InferType<C>;
-	getQuery: (queriesArray: string[]) => InferType<Q>;
+	getQuery: (queriesArray: string[]) => InferType<Q> | undefined;
 	getBody: () => InferType<B>;
 }
 
