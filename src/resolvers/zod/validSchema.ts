@@ -24,6 +24,7 @@ export const validSchema = <
 	if (Schemas?.query) {
 		const query = req.getQuery(Object.keys(Schemas.query.shape));
 		if (query) Schemas.query.parse(query);
+		else Schemas.query.parse({});
 	}
 
 	if (Schemas?.body) {
