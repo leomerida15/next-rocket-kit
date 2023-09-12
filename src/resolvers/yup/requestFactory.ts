@@ -16,7 +16,6 @@ export const requestFactory = async <
 	context: InferType<C>,
 	Schemas?: IYupSchemasValid<B, C, Q, H, R>,
 ) => {
-	const url = new URL(nativeRequest.url);
 	const body = await (async () => {
 		const valid_methods = !["DELETE", "GET"].includes(nativeRequest.method);
 
@@ -33,7 +32,13 @@ export const requestFactory = async <
 			return { ...context, params };
 		},
 		getQuery: (queriesArray: string[]): InferType<Q> => {
+			//
+			if (nativeRequest.url) return {};
+
+			const url = new URL(nativeRequest.url);
+
 			const resQueries: any = {};
+
 			queriesArray.map((q: string) => {
 				const validItem = Number(url.searchParams.get(q));
 				if (validItem !== 0 && !validItem) {

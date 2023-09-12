@@ -11,26 +11,34 @@ export const yupRoute = <
 	Q extends ObjectSchema<AnyObject>,
 	H extends ISchema<any>,
 	R extends ISchema<any>,
->({
-	schemas,
-	Handler,
-}: IYupRouteParams<B, C, Q, H, R>) => {
+>(
+	P: IYupRouteParams<B, C, Q, H, R> | IYupRouteParams<B, C, Q, H, R>["Handler"],
+) => {
 	return async (
 		nextRequest: NextRequest,
 		context: InferType<C>,
 	): Promise<YupActionReturnType<B, C, Q, H, R>> => {
 		try {
-			const req = await requestFactory<B, C, Q, H, R>(
-				nextRequest,
-				context,
-				schemas,
-			);
+			if (typeof P === "object") {
+				const { schemas, Handler } = P;
+				const req = await requestFactory<B, C, Q, H, R>(
+					nextRequest,
+					context,
+					schemas,
+				);
 
-			validSchema<B, C, Q, H, R>(schemas, req);
+				validSchema<B, C, Q, H, R>(schemas, req);
 
-			const reply = responseFactory(schemas?.response);
+				const reply = responseFactory(schemas?.response);
 
-			return Handler(req, reply, context);
+				return Handler(req, reply, context);
+			}
+
+			const req = await requestFactory<B, C, Q, H, R>(nextRequest, context);
+
+			const reply = responseFactory();
+
+			return P(req, reply, context);
 		} catch (error) {
 			return NextResponse.json((error as any).errors, { status: 400 });
 		}
