@@ -1,11 +1,14 @@
 {
-  "version": "0.4.18",
+  "version": "0.4.22",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/leomerida15/next-rocket-kit"
+  },
+  "bugs": {
+    "url": "https://github.com/leomerida15/next-rocket-kit/issues"
   },
   "keywords": [
     "next",

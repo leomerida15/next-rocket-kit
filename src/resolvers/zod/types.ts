@@ -57,9 +57,7 @@ export interface IZodRequestFactoryResp<
 > extends NextRequest {
 	getHeaders: () => ReturnType<typeof headers>;
 	getContext: () => TypeOf<C>;
-	getQuery: (
-		queryArray: string[],
-	) => TypeOf<Q> | Record<string, string | number>;
+	getQuery: (queryArray: string[]) => TypeOf<Q>;
 	getBody: () => TypeOf<B>;
 }
 

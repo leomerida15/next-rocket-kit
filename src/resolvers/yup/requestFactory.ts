@@ -31,14 +31,29 @@ export const requestFactory = async <
 
 			return { ...context, params };
 		},
-		getQuery: (
-			queriesArray: string[],
-		): InferType<Q> | Record<string, string | number> => {
+		getQuery: (queriesArray: string[]): InferType<Q> => {
 			//
 			const resQueries: any = {};
-			if (!Object.keys(nativeRequest).includes("url")) return resQueries;
 
-			const url = new URL(nativeRequest.url);
+			const symbolsReq = Object.getOwnPropertySymbols(nativeRequest);
+
+			const UrlNative = symbolsReq
+				.filter((S) => {
+					//@ts-ignore
+					const item = nativeRequest[S];
+
+					return item?.url;
+				})
+				.map<URL>((S) => {
+					//@ts-ignore
+					const item = nativeRequest[S];
+
+					return item?.url;
+				})[0];
+
+			const validUrlNative = Object.keys(nativeRequest).includes("url");
+
+			const url = validUrlNative ? new URL(nativeRequest.url) : UrlNative;
 
 			queriesArray.map((q: string) => {
 				const validItem = Number(url.searchParams.get(q));
