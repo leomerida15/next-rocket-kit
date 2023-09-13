@@ -24,10 +24,7 @@ export const validSchema = <
 	if (Schemas?.query) {
 		const keys = Object.keys(Schemas.query.shape);
 
-		const query = req.getQuery(keys);
-
-		if (query) Schemas.query.validate(query);
-		else Schemas.query.validate({});
+		req.getQuery(keys);
 	}
 
 	if (Schemas?.body) {

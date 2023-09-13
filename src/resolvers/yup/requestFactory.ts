@@ -33,7 +33,10 @@ export const requestFactory = async <
 		},
 		getQuery: (queriesArray: string[]): InferType<Q> | undefined => {
 			//
-			if (!Object.keys(nativeRequest).includes("url")) return undefined;
+			if (!Object.keys(nativeRequest).includes("url")) {
+				if (Schemas?.query) return Schemas?.query.validate({});
+				return undefined;
+			}
 
 			const url = new URL(nativeRequest.url);
 

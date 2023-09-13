@@ -33,7 +33,11 @@ export const requestFactory = async <
 		},
 		getQuery: (queriesArray: string[]): TypeOf<Q> | undefined => {
 			//
-			if (!Object.keys(nativeRequest).includes("url")) return undefined;
+			if (!Object.keys(nativeRequest).includes("url")) {
+				if (Schemas?.query) return Schemas?.query.parse({});
+
+				return undefined;
+			}
 
 			const url = new URL(nativeRequest.url);
 
