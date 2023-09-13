@@ -31,7 +31,7 @@ export const requestFactory = async <
 
 			return { ...context, params };
 		},
-		getQuery: (queriesArray: string[]): TypeOf<Q> | {} => {
+		getQuery: (queriesArray: string[]): TypeOf<Q> | Object => {
 			//
 			const resQueries: any = {};
 
