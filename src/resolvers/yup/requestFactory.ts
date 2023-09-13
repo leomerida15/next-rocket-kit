@@ -50,6 +50,9 @@ export const requestFactory = async <
 					resQueries[q] = validItem;
 				}
 			});
+
+			if (Object.keys(resQueries).length) return undefined;
+
 			return resQueries;
 		},
 		getBody: (): InferType<B> => body,
