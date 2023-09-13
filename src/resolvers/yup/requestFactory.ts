@@ -33,14 +33,10 @@ export const requestFactory = async <
 		},
 		getQuery: (queriesArray: string[]): InferType<Q> | undefined => {
 			//
-			if (!Object.keys(nativeRequest).includes("url")) {
-				if (Schemas?.query) return Schemas?.query.validate({});
-				return undefined;
-			}
+			const resQueries: any = {};
+			if (!Object.keys(nativeRequest).includes("url")) return resQueries;
 
 			const url = new URL(nativeRequest.url);
-
-			const resQueries: any = {};
 
 			queriesArray.map((q: string) => {
 				const validItem = Number(url.searchParams.get(q));
@@ -50,8 +46,6 @@ export const requestFactory = async <
 					resQueries[q] = validItem;
 				}
 			});
-
-			if (Object.keys(resQueries).length) return undefined;
 
 			return resQueries;
 		},

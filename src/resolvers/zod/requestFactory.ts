@@ -31,17 +31,13 @@ export const requestFactory = async <
 
 			return { ...context, params };
 		},
-		getQuery: (queriesArray: string[]): TypeOf<Q> | undefined => {
+		getQuery: (queriesArray: string[]): TypeOf<Q> | {} => {
 			//
-			if (!Object.keys(nativeRequest).includes("url")) {
-				if (Schemas?.query) return Schemas?.query.parse({});
+			const resQueries: any = {};
 
-				return undefined;
-			}
+			if (!Object.keys(nativeRequest).includes("url")) return resQueries;
 
 			const url = new URL(nativeRequest.url);
-
-			const resQueries: any = {};
 
 			queriesArray.map((q: string) => {
 				const validItem = Number(url.searchParams.get(q));
@@ -51,8 +47,6 @@ export const requestFactory = async <
 					resQueries[q] = validItem;
 				}
 			});
-
-			if (Object.keys(resQueries).length) return undefined;
 
 			return resQueries;
 		},
