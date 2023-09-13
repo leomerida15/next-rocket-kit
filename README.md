@@ -42,11 +42,18 @@ This tool helps to quickly create an endpoint using the **next.js** **API** fold
 ```typescript
 // "path file" ~ ./libs/rocketKit
 
+import  { createRocket }  from  "next-rocket-kit";
+export  const  rocket  =  createRocket();
+ ```
+
+```typescript
+// "path file" ~ ./libs/rocketKit
 "use server";
 
-import  { createRocket }  from  "next-rocket-kit";
-export  const  { Route }  =  createRocket();
- ```
+import rocket from "./rocketKit"
+
+export const { Route } = rocket;
+  ```
 
 ```typescript
 // "path file" ~ ./src/app/api/route.ts
