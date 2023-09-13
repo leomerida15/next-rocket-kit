@@ -47,7 +47,7 @@ export  const  rocket  =  createRocket();
  ```
 
 ```typescript
-// "path file" ~ ./libs/rocketKit
+// "path file" ~ ./libs/Route
 "use server";
 
 import rocket from "./rocketKit"
@@ -57,7 +57,7 @@ export const { Route } = rocket;
 
 ```typescript
 // "path file" ~ ./src/app/api/route.ts
-import { Route } from '@/libs/rocketKit';
+import { Route } from '@/libs/Route';
 
 // End Point GET basic
 export  const  GET  =  Route({
@@ -93,7 +93,7 @@ The schemas attribute allows you to validate the type and format of the data tha
 
    ``` typescript
   // "path file" ~ ./src/app/api/route.ts
-  import { Route } from '@/libs/rocketKit';
+  import { Route } from '@/libs/Route';
 
    // End Point GET basic
   export  const  POST =  Route({
@@ -133,15 +133,15 @@ const Http = {
 
 ```typescript
 // "path file" ~ ./libs/rocketKit
-"use server";
-
 import  { createRocket }  from  "next-rocket-kit";
-export  const  { Route, Http }  =  createRocket();
+export  const  rocket  =  createRocket();
+export  const  { Http }  =  rocket;
   ```
 
   ``` typescript
 // "path file" ~ ./src/app/api/route.ts
-import { Route, Http } from '@/libs/rocketKit';
+import { Http } from '@/libs/rocketKit';
+import { Route } from '@/libs/Route';
 
 // End Point GET basic
 export const GET = Route({
@@ -168,17 +168,23 @@ To define the openapi version you must use the **oas** attribute in the kit conf
 "use server";
 
 import  { createRocket }  from  "next-rocket-kit";
-export  const  { Route, Http, OpenApi }  =  createRocket();
+
+export  const  rocket  =  createRocket();
+export  const  { Http, OpenApi }  =  rocket;
   ```
 
 ### OpenApi Example
 
   ```typescript
 // "path file" ~ ./libs/rocketKit
-"use server";
-
 import  { createRocket }  from  "next-rocket-kit";
-export  const  { Route, Http, OpenApi }  =  createRocket();
+
+export  const  rocket  =  createRocket();
+export  const  { Http, OpenApi }  =  rocket;
+  ```
+
+  ```typescript
+import { OpenApi } from "./libs/rocketkt";
 
 // declare info and openapi version.
 const openApi = OpenApi({
@@ -258,7 +264,7 @@ How use OpenApi with "zod".
 ```typescript
 import { OpenApi } from "@/libs/rocketKit"
 import { generateSchema, extendZodWithOpenApi } from '@anatine/zod-openapi';
-import {z} from 'zod';
+import { z } from 'zod';
 
 // extend zod
 extendZodWithOpenApi(z);
