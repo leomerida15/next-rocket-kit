@@ -31,7 +31,7 @@ export const requestFactory = async <
 
 			return { ...context, params };
 		},
-		getQuery: (queriesArray: string[]): InferType<Q> | Object => {
+		getQuery: (queriesArray: string[]): InferType<Q> => {
 			//
 			const resQueries: any = {};
 			if (!Object.keys(nativeRequest).includes("url")) return resQueries;
