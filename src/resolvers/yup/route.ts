@@ -27,8 +27,6 @@ export const yupRoute = <
 					schemas,
 				);
 
-				validSchema<B, C, Q, H, R>(schemas, req);
-
 				const reply = responseFactory(schemas?.response);
 
 				return Handler(req, reply, context);
