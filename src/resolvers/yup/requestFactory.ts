@@ -1,72 +1,39 @@
 import { NextRequest } from "next/server";
 import { IYupSchemasValid } from "./types";
-import { formatParams } from "../methods/formatParams";
-import { headers } from "next/headers";
 import { IYupRequestFactoryResp } from "./types";
-import { AnyObject, InferType, ISchema } from "yup";
+import { AnyObject, InferType, ObjectSchema } from "yup";
+import ValidAndFormat from "./ValidAndFormat";
 
 export const requestFactory = async <
-	B extends ISchema<any>,
-	C extends ISchema<any>,
-	Q extends ISchema<AnyObject>,
-	H extends ISchema<any>,
-	R extends ISchema<any>,
+	B extends ObjectSchema<AnyObject>,
+	C extends ObjectSchema<AnyObject>,
+	Q extends ObjectSchema<AnyObject>,
+	H extends ObjectSchema<AnyObject>,
+	R extends ObjectSchema<AnyObject>,
 >(
 	nativeRequest: NextRequest,
 	context: InferType<C>,
 	Schemas?: IYupSchemasValid<B, C, Q, H, R>,
 ) => {
-	const body = await (async () => {
-		const valid_methods = !["DELETE", "GET"].includes(nativeRequest.method);
+	const validAndFormat = new ValidAndFormat<B, C, Q, H, R>(
+		nativeRequest,
+		context,
+		Schemas,
+	);
 
-		if (!(valid_methods && Schemas?.body)) return {};
+	const Headers = validAndFormat.headers();
 
-		return await nativeRequest.json();
-	})();
+	const Context = validAndFormat.context();
+
+	const Query = validAndFormat.query();
+
+	const body = await validAndFormat.body();
 
 	const resp = {
-		getHeaders: headers,
-		getContext: (): InferType<C> => {
-			const params = formatParams(context.params);
-
-			return { ...context, params };
-		},
-		getQuery: (queriesArray: string[]): InferType<Q> => {
-			//
-			const resQueries: any = {};
-
-			const symbolsReq = Object.getOwnPropertySymbols(nativeRequest);
-
-			const UrlNative = symbolsReq
-				.filter((S) => {
-					//@ts-ignore
-					const item = nativeRequest[S];
-
-					return item?.url;
-				})
-				.map<URL>((S) => {
-					//@ts-ignore
-					const item = nativeRequest[S];
-
-					return item?.url;
-				})[0];
-
-			const validUrlNative = Object.keys(nativeRequest).includes("url");
-
-			const url = validUrlNative ? new URL(nativeRequest.url) : UrlNative;
-
-			queriesArray.map((q: string) => {
-				const validItem = Number(url.searchParams.get(q));
-				if (validItem !== 0 && !validItem) {
-					resQueries[q] = url.searchParams.get(q);
-				} else {
-					resQueries[q] = validItem;
-				}
-			});
-
-			return resQueries;
-		},
-		getBody: (): InferType<B> => body,
+		getHeaders: () => Headers,
+		getContext: () => Context,
+		getQuery: (keys: Array<keyof InferType<Q> | string>) => Query(keys),
+		getBody: () => body,
 	};
 
 	return { ...resp, ...nativeRequest } as IYupRequestFactoryResp<B, C, Q>;

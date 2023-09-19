@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { headers } from "next/headers";
-import { AnyObject, ISchema, InferType } from "yup";
+import { AnyObject, ISchema, InferType, ObjectSchema } from "yup";
 import { yupRoute } from "./route";
 import { responseFactory } from "./responseFactory";
 
@@ -14,47 +14,47 @@ export type YupHandlerReturn =
 	| ReturnType<ReturnType<YupResponseFactoryType>["next"]>;
 
 export type YupHandlerType<
-	B extends ISchema<any>,
-	C extends ISchema<any>,
-	Q extends ISchema<AnyObject>,
-	H extends ISchema<any>,
-	R extends ISchema<any>,
+	B extends ObjectSchema<AnyObject>,
+	C extends ObjectSchema<AnyObject>,
+	Q extends ObjectSchema<AnyObject>,
+	H extends ObjectSchema<AnyObject>,
+	R extends ObjectSchema<AnyObject>,
 > = IYupRouteParams<B, C, Q, H, R>["Handler"];
 
 export type YupActionReturnType<
-	B extends ISchema<any>,
-	C extends ISchema<any>,
-	Q extends ISchema<AnyObject>,
-	H extends ISchema<any>,
-	R extends ISchema<any>,
+	B extends ObjectSchema<AnyObject>,
+	C extends ObjectSchema<AnyObject>,
+	Q extends ObjectSchema<AnyObject>,
+	H extends ObjectSchema<AnyObject>,
+	R extends ObjectSchema<AnyObject>,
 > = ReturnType<YupHandlerType<B, C, Q, H, R>>;
 
 type MethodKeyType = "Handler";
 type MethodIndexType = "0";
 
 export type YupReqType<
-	B extends ISchema<any>,
-	C extends ISchema<any>,
-	Q extends ISchema<AnyObject>,
-	H extends ISchema<any>,
-	R extends ISchema<any>,
+	B extends ObjectSchema<AnyObject>,
+	C extends ObjectSchema<AnyObject>,
+	Q extends ObjectSchema<AnyObject>,
+	H extends ObjectSchema<AnyObject>,
+	R extends ObjectSchema<AnyObject>,
 > = Parameters<IYupRouteParams<B, C, Q, H, R>[MethodKeyType]>[MethodIndexType];
 
 type ShemaKeyType = "schemas";
 export type IYupSchema<
-	B extends ISchema<any>,
-	C extends ISchema<any>,
-	Q extends ISchema<AnyObject>,
-	H extends ISchema<any>,
-	R extends ISchema<any>,
+	B extends ObjectSchema<AnyObject>,
+	C extends ObjectSchema<AnyObject>,
+	Q extends ObjectSchema<AnyObject>,
+	H extends ObjectSchema<AnyObject>,
+	R extends ObjectSchema<AnyObject>,
 > = IYupRouteParams<B, C, Q, H, R>[ShemaKeyType];
 
 export interface IYupRouteParams<
-	B extends ISchema<any>,
-	C extends ISchema<any>,
-	Q extends ISchema<AnyObject>,
-	H extends ISchema<any>,
-	R extends ISchema<any>,
+	B extends ObjectSchema<AnyObject>,
+	C extends ObjectSchema<AnyObject>,
+	Q extends ObjectSchema<AnyObject>,
+	H extends ObjectSchema<AnyObject>,
+	R extends ObjectSchema<AnyObject>,
 > {
 	schemas?: IYupSchemasValid<B, C, Q, H, R>;
 	Handler: (
