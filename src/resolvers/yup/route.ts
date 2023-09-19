@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requestFactory } from "./requestFactory";
 import { responseFactory } from "./responseFactory";
-import { validSchema } from "./validSchema";
 import { IYupRouteParams, YupActionReturnType } from "./types";
 import { ISchema, AnyObject, InferType, ObjectSchema } from "yup";
 

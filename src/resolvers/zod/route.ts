@@ -3,7 +3,6 @@ import { ZodType, ZodTypeDef, ZodObject, TypeOf } from "zod";
 import { ZodActionReturnType, IZodRouteParams } from "./types";
 import { requestFactory } from "./requestFactory";
 import { responseFactory } from "./responseFactory";
-import { validSchema } from "./validSchema";
 
 export const zodRoute = <
 	B extends ZodType<any, ZodTypeDef, any>,
