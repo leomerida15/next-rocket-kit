@@ -49,13 +49,13 @@ export default class ValidAndFormat<
 		const UrlNative = symbolsReq
 			.filter((S) => {
 				//@ts-ignore
-				const item = nativeRequest[S];
+				const item = this.nativeRequest[S];
 
 				return item?.url;
 			})
 			.map<URL>((S) => {
 				//@ts-ignore
-				const item = nativeRequest[S];
+				const item = this.nativeRequest[S];
 
 				return item?.url;
 			})[0];
@@ -88,7 +88,7 @@ export default class ValidAndFormat<
 	query() {
 		if (!this.Schemas?.query) return this.getQueryWhoNoHasSchema;
 
-		const keys = Object.keys(this.Schemas.query.shape);
+		const keys = Object.keys(this.Schemas.query.fields);
 
 		const query = this.getQueryWhoNoHasSchema(keys);
 

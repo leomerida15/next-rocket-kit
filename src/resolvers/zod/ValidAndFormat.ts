@@ -49,13 +49,13 @@ export default class ValidAndFormat<
 		const UrlNative = symbolsReq
 			.filter((S) => {
 				//@ts-ignore
-				const item = nativeRequest[S];
+				const item = this.nativeRequest[S];
 
 				return item?.url;
 			})
 			.map<URL>((S) => {
 				//@ts-ignore
-				const item = nativeRequest[S];
+				const item = this.nativeRequest[S];
 
 				return item?.url;
 			})[0];
