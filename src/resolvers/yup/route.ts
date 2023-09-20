@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { requestFactory } from "./requestFactory";
 import { responseFactory } from "./responseFactory";
 import { IYupRouteParams, YupActionReturnType } from "./types";
-import { ISchema, AnyObject, InferType, ObjectSchema } from "yup";
+import { AnyObject, InferType, ObjectSchema } from "yup";
 
 export const yupRoute = <
-	B extends ISchema<any>,
-	C extends ISchema<any>,
+	B extends ObjectSchema<AnyObject>,
+	C extends ObjectSchema<AnyObject>,
 	Q extends ObjectSchema<AnyObject>,
-	H extends ISchema<any>,
-	R extends ISchema<any>,
+	H extends ObjectSchema<AnyObject>,
+	R extends ObjectSchema<AnyObject>,
 >(
 	P: IYupRouteParams<B, C, Q, H, R> | IYupRouteParams<B, C, Q, H, R>["Handler"],
 ) => {
