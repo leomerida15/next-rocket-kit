@@ -3,6 +3,5 @@
 node_modules
 dist
 index.js
-!src
 npm
 script

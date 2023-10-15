@@ -23,5 +23,5 @@ export const createRocket = <
 
 	const OpenApi = Oas[config.oas];
 
-	return { Route, Http, OpenApi };
+	return { onRoute: () => ({ Route }), Route, Http, OpenApi };
 };
