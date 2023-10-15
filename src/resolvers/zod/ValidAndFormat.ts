@@ -26,49 +26,37 @@ export default class ValidAndFormat<
 		this.nativeRequest = nativeRequest;
 	}
 
-	headers(): TypeOf<H> | ReadonlyHeaders {
-		if (!this.Schemas?.headers) return Headers();
+	private getQueryWhoNoHasSchema() {
+		return (queriesArray: Array<keyof TypeOf<Q>>): Partial<TypeOf<Q>> => {
+			//
+			const resQueries: any = {};
 
-		return this.Schemas.headers.parse(Headers());
-	}
+			const symbolsReq = Object.getOwnPropertySymbols(this.nativeRequest);
 
-	context(): TypeOf<C> {
-		if (!this.Schemas?.context) return this.NativeContext;
+			const UrlNative = symbolsReq
+				.filter((S) => {
+					//@ts-ignore
+					const item = this.nativeRequest[S];
 
-		return this.Schemas.context.parse(this.NativeContext);
-	}
+					return item?.url;
+				})
+				.map<URL>((S) => {
+					//@ts-ignore
+					const item = this.nativeRequest[S];
 
-	private getQueryWhoNoHasSchema(
-		queriesArray: Array<keyof TypeOf<Q>>,
-	): Partial<TypeOf<Q>> {
-		//
-		const resQueries: any = {};
+					return item?.url;
+				})[0];
 
-		const symbolsReq = Object.getOwnPropertySymbols(this.nativeRequest);
+			const validUrlNative = Object.keys(this.nativeRequest).includes("url");
 
-		const UrlNative = symbolsReq
-			.filter((S) => {
-				//@ts-ignore
-				const item = this.nativeRequest[S];
+			const url = validUrlNative ? new URL(this.nativeRequest.url) : UrlNative;
 
-				return item?.url;
-			})
-			.map<URL>((S) => {
-				//@ts-ignore
-				const item = this.nativeRequest[S];
+			queriesArray.map((q) => {
+				resQueries[q] = url.searchParams.get(String(q));
+			});
 
-				return item?.url;
-			})[0];
-
-		const validUrlNative = Object.keys(this.nativeRequest).includes("url");
-
-		const url = validUrlNative ? new URL(this.nativeRequest.url) : UrlNative;
-
-		queriesArray.map((q) => {
-			resQueries[q] = url.searchParams.get(String(q));
-		});
-
-		return resQueries;
+			return resQueries;
+		};
 	}
 
 	private createGetQueryWhoHasSchema(queryFormat: TypeOf<Q>) {
@@ -85,12 +73,24 @@ export default class ValidAndFormat<
 		};
 	}
 
+	headers(): TypeOf<H> | ReadonlyHeaders {
+		if (!this.Schemas?.headers) return Headers();
+
+		return this.Schemas.headers.parse(Headers());
+	}
+
+	context(): TypeOf<C> {
+		if (!this.Schemas?.context) return this.NativeContext;
+
+		return this.Schemas.context.parse(this.NativeContext);
+	}
+
 	query() {
-		if (!this.Schemas?.query) return this.getQueryWhoNoHasSchema;
+		if (!this.Schemas?.query) return this.getQueryWhoNoHasSchema();
 
 		const keys = Object.keys(this.Schemas.query.shape);
 
-		const query = this.getQueryWhoNoHasSchema(keys);
+		const query = this.getQueryWhoNoHasSchema()(keys);
 
 		const queryFormat = this.Schemas.query.parse(query) as TypeOf<Q>;
 

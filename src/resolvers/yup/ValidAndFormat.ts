@@ -38,37 +38,37 @@ export default class ValidAndFormat<
 		return this.Schemas.context.validateSync(this.NativeContext);
 	}
 
-	private getQueryWhoNoHasSchema(
-		queriesArray: Array<keyof InferType<Q>>,
-	): Partial<InferType<Q>> {
-		//
-		const resQueries: any = {};
+	private getQueryWhoNoHasSchema() {
+		return (queriesArray: Array<keyof InferType<Q>>): Partial<InferType<Q>> => {
+			//
+			const resQueries: any = {};
 
-		const symbolsReq = Object.getOwnPropertySymbols(this.nativeRequest);
+			const symbolsReq = Object.getOwnPropertySymbols(this.nativeRequest);
 
-		const UrlNative = symbolsReq
-			.filter((S) => {
-				//@ts-ignore
-				const item = this.nativeRequest[S];
+			const UrlNative = symbolsReq
+				.filter((S) => {
+					//@ts-ignore
+					const item = this.nativeRequest[S];
 
-				return item?.url;
-			})
-			.map<URL>((S) => {
-				//@ts-ignore
-				const item = this.nativeRequest[S];
+					return item?.url;
+				})
+				.map<URL>((S) => {
+					//@ts-ignore
+					const item = this.nativeRequest[S];
 
-				return item?.url;
-			})[0];
+					return item?.url;
+				})[0];
 
-		const validUrlNative = Object.keys(this.nativeRequest).includes("url");
+			const validUrlNative = Object.keys(this.nativeRequest).includes("url");
 
-		const url = validUrlNative ? new URL(this.nativeRequest.url) : UrlNative;
+			const url = validUrlNative ? new URL(this.nativeRequest.url) : UrlNative;
 
-		queriesArray.map((q) => {
-			resQueries[q] = url.searchParams.get(String(q));
-		});
+			queriesArray.map((q) => {
+				resQueries[q] = url.searchParams.get(String(q));
+			});
 
-		return resQueries;
+			return resQueries;
+		};
 	}
 
 	private createGetQueryWhoHasSchema(queryFormat: InferType<Q>) {
@@ -86,11 +86,11 @@ export default class ValidAndFormat<
 	}
 
 	query() {
-		if (!this.Schemas?.query) return this.getQueryWhoNoHasSchema;
+		if (!this.Schemas?.query) return this.getQueryWhoNoHasSchema();
 
 		const keys = Object.keys(this.Schemas.query.fields);
 
-		const query = this.getQueryWhoNoHasSchema(keys);
+		const query = this.getQueryWhoNoHasSchema()(keys);
 
 		const queryFormat = this.Schemas.query.validateSync(query) as InferType<Q>;
 

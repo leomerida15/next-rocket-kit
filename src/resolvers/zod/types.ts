@@ -31,6 +31,7 @@ export type ZodResponseFactoryKeyJsonType = ReturnType<
 
 export type ZodHandlerReturn =
 	| void
+	| Response
 	| ReturnType<ReturnType<ZodResponseFactoryType>["json"]>
 	| ReturnType<ReturnType<ZodResponseFactoryType>["redirect"]>
 	| ReturnType<ReturnType<ZodResponseFactoryType>["rewrite"]>
@@ -73,7 +74,7 @@ export interface IZodRouteParams<
 		req: IZodRequestFactoryResp<B, C, Q>,
 		reply: ReturnType<typeof responseFactory>,
 		context: TypeOf<C>,
-	) => ZodHandlerReturn | Promise<ZodHandlerReturn>;
+	) => ZodHandlerReturn;
 }
 
 export type ZodRouteType = typeof zodRoute;
