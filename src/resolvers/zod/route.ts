@@ -28,14 +28,23 @@ export const zodRoute = <
 
 				const reply = responseFactory(schemas?.response);
 
-				return Handler(req, reply, context);
+				if (!(Handler instanceof Promise)) {
+					const resp = await Handler(req, reply, context);
+					return resp;
+				}
+
+				const resp = await Handler(req, reply, context);
+
+				return resp;
 			}
 
 			const req = await requestFactory<B, C, Q, H, R>(nextRequest, context);
 
 			const reply = responseFactory();
 
-			return P(req, reply, context);
+			const pResponse = P(req, reply, context);
+
+			return pResponse;
 		} catch (error) {
 			return NextResponse.json((error as any).errors, { status: 400 });
 		}

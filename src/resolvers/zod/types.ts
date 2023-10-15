@@ -29,13 +29,7 @@ export type ZodResponseFactoryKeyJsonType = ReturnType<
 	ReturnType<ZodResponseFactoryType>["json"]
 >;
 
-export type ZodHandlerReturn =
-	| void
-	| Response
-	| ReturnType<ReturnType<ZodResponseFactoryType>["json"]>
-	| ReturnType<ReturnType<ZodResponseFactoryType>["redirect"]>
-	| ReturnType<ReturnType<ZodResponseFactoryType>["rewrite"]>
-	| ReturnType<ReturnType<ZodResponseFactoryType>["next"]>;
+export type ZodHandlerReturn = void | Response | Promise<void | Response>;
 
 export interface IZodSchemasValid<
 	B extends ZodType<any, ZodTypeDef, any>,
@@ -74,7 +68,7 @@ export interface IZodRouteParams<
 		req: IZodRequestFactoryResp<B, C, Q>,
 		reply: ReturnType<typeof responseFactory>,
 		context: TypeOf<C>,
-	) => ZodHandlerReturn;
+	) => void | Response | Promise<void | Response>;
 }
 
 export type ZodRouteType = typeof zodRoute;
