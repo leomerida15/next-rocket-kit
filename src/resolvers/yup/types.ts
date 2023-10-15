@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { AnyObject, ISchema, InferType, ObjectSchema } from "yup";
 import { yupRoute } from "./route";
@@ -61,7 +61,7 @@ export interface IYupRouteParams<
 		req: IYupRequestFactoryResp<B, C, Q>,
 		reply: ReturnType<YupResponseFactoryType>,
 		context: InferType<C>,
-	) => YupHandlerReturn | Promise<YupHandlerReturn>;
+	) => void | Response | Promise<void | Response> | NextResponse<InferType<R>>;
 }
 
 export interface IYupSchemasValid<

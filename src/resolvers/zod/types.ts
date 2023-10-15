@@ -1,5 +1,5 @@
 import { ZodType, ZodTypeDef, ZodObject, TypeOf } from "zod";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { requestFactory } from "./requestFactory";
 import { responseFactory } from "./responseFactory";
@@ -68,7 +68,7 @@ export interface IZodRouteParams<
 		req: IZodRequestFactoryResp<B, C, Q>,
 		reply: ReturnType<typeof responseFactory>,
 		context: TypeOf<C>,
-	) => void | Response | Promise<void | Response>;
+	) => void | Response | Promise<void | Response> | NextResponse<TypeOf<R>>;
 }
 
 export type ZodRouteType = typeof zodRoute;
