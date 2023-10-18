@@ -16,7 +16,7 @@ export const yupRoute = <
 	const controllerFactory = (
 		nextRequest: NextRequest,
 		context: InferType<C>,
-	): void => {
+	) => {
 		try {
 			const { schemas, Handler } = ((): {
 				schemas?: IYupRouteParams<B, C, Q, H, R>["schemas"];
@@ -33,15 +33,17 @@ export const yupRoute = <
 				};
 			})();
 
-			requestFactory<B, C, Q, H, R>(nextRequest, context, schemas).then(
-				(req) => {
+			return requestFactory<B, C, Q, H, R>(nextRequest, context, schemas)
+				.then((req) => {
 					const reply = responseFactory(schemas?.response);
 
-					Handler(req, reply, context);
-				},
-			);
+					return Handler(req, reply, context);
+				})
+				.finally();
 		} catch (error) {
-			NextResponse.json((error as any).errors, { status: 400 });
+			return NextResponse.json((error as any).errors, {
+				status: 400,
+			}) as Response;
 		}
 	};
 

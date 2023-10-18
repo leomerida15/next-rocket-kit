@@ -13,10 +13,7 @@ export const zodRoute = <
 >(
 	P: IZodRouteParams<B, C, Q, H, R> | IZodRouteParams<B, C, Q, H, R>["Handler"],
 ) => {
-	const controllerFactory = (
-		nextRequest: NextRequest,
-		context: TypeOf<C>,
-	): void => {
+	const controllerFactory = (nextRequest: NextRequest, context: TypeOf<C>) => {
 		try {
 			const { schemas, Handler } = ((): {
 				schemas?: IZodRouteParams<B, C, Q, H, R>["schemas"];
@@ -33,15 +30,17 @@ export const zodRoute = <
 				};
 			})();
 
-			requestFactory<B, C, Q, H, R>(nextRequest, context, schemas).then(
-				async (req) => {
+			return requestFactory<B, C, Q, H, R>(nextRequest, context, schemas)
+				.then((req) => {
 					const reply = responseFactory(schemas?.response);
 
-					Handler(req, reply, context);
-				},
-			);
+					return Handler(req, reply, context);
+				})
+				.finally();
 		} catch (error) {
-			NextResponse.json((error as any).errors, { status: 400 });
+			return NextResponse.json((error as any).errors, {
+				status: 400,
+			}) as Response;
 		}
 	};
 
