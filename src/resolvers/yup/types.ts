@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { AnyObject, ISchema, InferType, ObjectSchema } from "yup";
 import { yupRoute } from "./route";
 import { responseFactory } from "./responseFactory";
+import { TypeOf } from "zod";
 
 export type YupResponseFactoryType = typeof responseFactory;
 
@@ -61,7 +62,11 @@ export interface IYupRouteParams<
 		req: IYupRequestFactoryResp<B, C, Q>,
 		reply: ReturnType<YupResponseFactoryType>,
 		context: InferType<C>,
-	) => void | Response;
+	) =>
+		| void
+		| Response
+		| NextResponse<InferType<R>>
+		| Promise<void | Response | NextResponse<InferType<R>>>;
 }
 
 export interface IYupSchemasValid<

@@ -68,7 +68,11 @@ export interface IZodRouteParams<
 		req: IZodRequestFactoryResp<B, C, Q>,
 		reply: ReturnType<typeof responseFactory>,
 		context: TypeOf<C>,
-	) => void | Response;
+	) =>
+		| void
+		| Response
+		| NextResponse<TypeOf<R>>
+		| Promise<void | Response | NextResponse<TypeOf<R>>>;
 }
 
 export type ZodRouteType = typeof zodRoute;

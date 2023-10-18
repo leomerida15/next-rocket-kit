@@ -37,7 +37,9 @@ export const yupRoute = <
 				.then((req) => {
 					const reply = responseFactory(schemas?.response);
 
-					return Handler(req, reply, context);
+					return () => {
+						Handler(req, reply, context);
+					};
 				})
 				.finally();
 		} catch (error) {

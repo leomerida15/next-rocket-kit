@@ -34,7 +34,9 @@ export const zodRoute = <
 				.then(async (req) => {
 					const reply = responseFactory(schemas?.response);
 
-					return Handler(req, reply, context);
+					return () => {
+						Handler(req, reply, context);
+					};
 				})
 				.finally();
 		} catch (error) {
