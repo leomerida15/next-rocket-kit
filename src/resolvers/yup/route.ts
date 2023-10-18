@@ -33,17 +33,15 @@ export const yupRoute = <
 				};
 			})();
 
-			return requestFactory<B, C, Q, H, R>(nextRequest, context, schemas)
+			requestFactory<B, C, Q, H, R>(nextRequest, context, schemas)
 				.then((req) => {
 					const reply = responseFactory(schemas?.response);
 
-					return () => {
-						Handler(req, reply, context);
-					};
+					Handler(req, reply, context);
 				})
 				.finally();
 		} catch (error) {
-			return NextResponse.json((error as any).errors, { status: 400 });
+			NextResponse.json((error as any).errors, { status: 400 });
 		}
 	};
 
