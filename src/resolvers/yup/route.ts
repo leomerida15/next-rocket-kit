@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requestFactory } from "./requestFactory";
 import { responseFactory } from "./responseFactory";
-import { IYupRouteParams, YupActionReturnType } from "./types";
+import { IYupRouteParams } from "./types";
 import { AnyObject, InferType, ObjectSchema } from "yup";
 
 export const yupRoute = <
@@ -13,31 +13,28 @@ export const yupRoute = <
 >(
 	P: IYupRouteParams<B, C, Q, H, R> | IYupRouteParams<B, C, Q, H, R>["Handler"],
 ) => {
-	return async (
+	const controllerFactory = (
 		nextRequest: NextRequest,
 		context: InferType<C>,
-	): Promise<YupActionReturnType<B, C, Q, H, R>> => {
+	) => {
 		try {
-			if (typeof P === "object") {
-				const { schemas, Handler } = P;
-				const req = await requestFactory<B, C, Q, H, R>(
-					nextRequest,
-					context,
-					schemas,
-				);
+			const validPType = typeof P === "object";
 
-				const reply = responseFactory(schemas?.response);
+			const schemas = validPType ? P.schemas : undefined;
 
-				return Handler(req, reply, context);
-			}
+			const Handler = validPType ? P.Handler : P;
 
-			const req = await requestFactory<B, C, Q, H, R>(nextRequest, context);
+			return requestFactory<B, C, Q, H, R>(nextRequest, context, schemas)
+				.then((req) => {
+					const reply = responseFactory(schemas?.response);
 
-			const reply = responseFactory();
-
-			return P(req, reply, context);
+					return Handler(req, reply, context);
+				})
+				.finally();
 		} catch (error) {
 			return NextResponse.json((error as any).errors, { status: 400 });
 		}
 	};
+
+	return controllerFactory;
 };

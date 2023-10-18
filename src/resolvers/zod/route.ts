@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ZodType, ZodTypeDef, ZodObject, TypeOf } from "zod";
-import { ZodActionReturnType, IZodRouteParams } from "./types";
+import { IZodRouteParams } from "./types";
 import { requestFactory } from "./requestFactory";
 import { responseFactory } from "./responseFactory";
 
@@ -13,40 +13,25 @@ export const zodRoute = <
 >(
 	P: IZodRouteParams<B, C, Q, H, R> | IZodRouteParams<B, C, Q, H, R>["Handler"],
 ) => {
-	return async (
-		nextRequest: NextRequest,
-		context: TypeOf<C>,
-	): Promise<ZodActionReturnType<B, C, Q, H, R>> => {
+	const controllerFactory = (nextRequest: NextRequest, context: TypeOf<C>) => {
 		try {
-			if (typeof P === "object") {
-				const { schemas, Handler } = P;
-				const req = await requestFactory<B, C, Q, H, R>(
-					nextRequest,
-					context,
-					schemas,
-				);
+			const validPType = typeof P === "object";
 
-				const reply = responseFactory(schemas?.response);
+			const schemas = validPType ? P.schemas : undefined;
 
-				if (!(Handler instanceof Promise)) {
-					const resp = await Handler(req, reply, context);
-					return resp;
-				}
+			const Handler = validPType ? P.Handler : P;
 
-				const resp = await Handler(req, reply, context);
+			return requestFactory<B, C, Q, H, R>(nextRequest, context, schemas)
+				.then((req) => {
+					const reply = responseFactory(schemas?.response);
 
-				return resp;
-			}
-
-			const req = await requestFactory<B, C, Q, H, R>(nextRequest, context);
-
-			const reply = responseFactory();
-
-			const pResponse = P(req, reply, context);
-
-			return pResponse;
+					return Handler(req, reply, context);
+				})
+				.finally();
 		} catch (error) {
 			return NextResponse.json((error as any).errors, { status: 400 });
 		}
 	};
+
+	return controllerFactory;
 };
