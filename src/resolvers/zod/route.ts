@@ -45,5 +45,7 @@ export const zodRoute = <
 		}
 	};
 
-	return void controllerFactory;
+	return (nextRequest: NextRequest, context: TypeOf<C>) => {
+		void controllerFactory(nextRequest, context);
+	};
 };

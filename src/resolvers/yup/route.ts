@@ -45,5 +45,7 @@ export const yupRoute = <
 		}
 	};
 
-	return void controllerFactory;
+	return (nextRequest: NextRequest, context: InferType<C>) => {
+		controllerFactory(nextRequest, context);
+	};
 };
