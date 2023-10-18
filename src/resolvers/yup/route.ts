@@ -18,11 +18,20 @@ export const yupRoute = <
 		context: InferType<C>,
 	) => {
 		try {
-			const validPType = typeof P === "object";
+			const { schemas, Handler } = ((): {
+				schemas?: IYupRouteParams<B, C, Q, H, R>["schemas"];
+				Handler: IYupRouteParams<B, C, Q, H, R>["Handler"];
+			} => {
+				if (typeof P === "object")
+					return {
+						schemas: P.schemas,
+						Handler: P.Handler,
+					};
 
-			const schemas = validPType ? P.schemas : undefined;
-
-			const Handler = validPType ? P.Handler : P;
+				return {
+					Handler: P,
+				};
+			})();
 
 			return requestFactory<B, C, Q, H, R>(nextRequest, context, schemas)
 				.then((req) => {
