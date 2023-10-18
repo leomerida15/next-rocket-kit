@@ -33,17 +33,17 @@ export const zodRoute = <
 				};
 			})();
 
-			requestFactory<B, C, Q, H, R>(nextRequest, context, schemas)
-				.then(async (req) => {
+			requestFactory<B, C, Q, H, R>(nextRequest, context, schemas).then(
+				async (req) => {
 					const reply = responseFactory(schemas?.response);
 
 					Handler(req, reply, context);
-				})
-				.finally();
+				},
+			);
 		} catch (error) {
 			NextResponse.json((error as any).errors, { status: 400 });
 		}
 	};
 
-	return void controllerFactory;
+	return controllerFactory;
 };

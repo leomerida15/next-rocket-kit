@@ -21,11 +21,7 @@ export const createRocket = <
 		? typeof resolverObj.yup
 		: typeof resolverObj.zod;
 
-	type onRoute = () => {
-		Route: (params: Parameters<typeof Route>["0"]) => Promise<void | Response>;
-	};
-
-	const onRoute = (() => ({ Route })) as unknown as onRoute;
+	const onRoute = () => ({ Route });
 
 	const OpenApi = Oas[config.oas];
 
