@@ -13,7 +13,10 @@ export const zodRoute = <
 >(
 	P: IZodRouteParams<B, C, Q, H, R> | IZodRouteParams<B, C, Q, H, R>["Handler"],
 ) => {
-	const controllerFactory = (nextRequest: NextRequest, context: TypeOf<C>) => {
+	const controllerFactory = (
+		nextRequest: NextRequest,
+		context: TypeOf<C>,
+	): void => {
 		try {
 			const { schemas, Handler } = ((): {
 				schemas?: IZodRouteParams<B, C, Q, H, R>["schemas"];
@@ -42,5 +45,5 @@ export const zodRoute = <
 		}
 	};
 
-	return controllerFactory;
+	return void controllerFactory;
 };

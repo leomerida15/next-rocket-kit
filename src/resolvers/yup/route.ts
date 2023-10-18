@@ -16,7 +16,7 @@ export const yupRoute = <
 	const controllerFactory = (
 		nextRequest: NextRequest,
 		context: InferType<C>,
-	) => {
+	): void => {
 		try {
 			const { schemas, Handler } = ((): {
 				schemas?: IYupRouteParams<B, C, Q, H, R>["schemas"];
@@ -45,5 +45,5 @@ export const yupRoute = <
 		}
 	};
 
-	return controllerFactory;
+	return void controllerFactory;
 };
