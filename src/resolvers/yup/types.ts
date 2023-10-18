@@ -3,7 +3,6 @@ import { headers } from "next/headers";
 import { AnyObject, ISchema, InferType, ObjectSchema } from "yup";
 import { yupRoute } from "./route";
 import { responseFactory } from "./responseFactory";
-import { TypeOf } from "zod";
 
 export type YupResponseFactoryType = typeof responseFactory;
 
