@@ -31,7 +31,7 @@ export const zodRoute = <
 			})();
 
 			return requestFactory<B, C, Q, H, R>(nextRequest, context, schemas)
-				.then((req) => {
+				.then(async (req) => {
 					const reply = responseFactory(schemas?.response);
 
 					return Handler(req, reply, context);

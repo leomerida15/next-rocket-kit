@@ -61,12 +61,7 @@ export interface IYupRouteParams<
 		req: IYupRequestFactoryResp<B, C, Q>,
 		reply: ReturnType<YupResponseFactoryType>,
 		context: InferType<C>,
-	) =>
-		| void
-		| Response
-		| Promise<void | Response>
-		| NextResponse<InferType<R>>
-		| Promise<NextResponse<InferType<R>>>;
+	) => void | Response;
 }
 
 export interface IYupSchemasValid<
