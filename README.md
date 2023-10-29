@@ -3,7 +3,7 @@
 
 This package is intended to make it easy to build back-end applications in the framework, **next.js** with, using the **app** directory.
 
-> **Note 🧪:** ***"Version compatible Next.js v13.5.5"***  Due to the sudden changes that next.js has in its internal functioning, we will leave here the most modern version with full compatibility with the next-rocket-kit
+> **Note 🧪:** ***"Version compatible Next.js v14.0.0"***  Due to the sudden changes that next.js has in its internal functioning, we will leave here the most modern version with full compatibility with the next-rocket-kit
 
 # Index
 
