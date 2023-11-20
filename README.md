@@ -41,42 +41,60 @@ In the event that the user does not place a configuration object, this will be t
 
 This tool helps to quickly create an endpoint using the **next.js** **API** folder.
 
-```typescript
-// "path file" ~ ./libs/rocketKit
+- We create the rocket to be able to access the tools in the kit.
 
-import  { createRocket }  from  "next-rocket-kit";
-export  const  rocket  =  createRocket();
- ```
+  "path file" ~ ./libs/rocketKit/tools
 
-```typescript
-// "path file" ~ ./libs/Route
-"use server";
+  ```typescript
+  import { createRocket } from "next-rocket-kit";
 
-import rocket from "./rocketKit"
-
-export const { Route } = rocket;
+  export const { onRoute, http, OpenApi } = createRocket();
   ```
 
-```typescript
-// "path file" ~ ./src/app/api/route.ts
-import { Route } from '@/libs/Route';
+- We define the router which should be used on the server side only, for this next.js gives us the comment function ```use serve```.
 
-// End Point GET basic
-export  const  GET  =  Route({
- Handler(req,  reply,  context)  {
-  return  reply.json({  message:  "Hello World!"  },  {  status:  201  });
- },
-});
- ```
+  ```typescript
+  "path file" ~ ./libs/rocketKit/Route
 
-### Configuration object for Route
+  "use serve"
+
+  import { onRoute } from "./tools";
+
+  export const { Route } = onRoute();
+  ```
+
+- We define barrel file.
+
+  ```typescript
+  "path file" ~ ./libs/rocketKit/index
+
+  export * from './tools';
+  export * from './Route';
+  ```
+
+- We define a basic endPoint.
+
+  ```typescript
+  // "path file" ~ ./src/app/api/Route.ts
+
+  import { Route } from "@/libs/rocketKit";
+
+  // End Point GET basic
+  export const GET = Route({
+    Handler(req, reply, context) {
+      return reply.json({ message: "Hello World!" }, { status: 201 });
+    },
+  });
+  ```
+
+## Configuration object for Route
 
 - **Handler:** is the function that is executed when calling the end point. With the rocket **Route** it is much easier for us to create endpoints, such as a GET method endpoint.
-The handler function receives three parameters to handle and control the request video cycle, these parameters are as follows.
+  The handler function receives three parameters to handle and control the request video cycle, these parameters are as follows.
 
   - req: Everything that arrives from the client and gives access to all the native methods of **NextRequest**.
 
-   Rocket functions in req.
+  Rocket functions in req.
 
   - req.getBody(): return body.
 
@@ -91,14 +109,14 @@ The handler function receives three parameters to handle and control the request
   - context (The native context of **nextjs**)
 
 - **Schema (Schema valid):**
-The schemas attribute allows you to validate the type and format of the data that enters and leaves the **Route**, to handle these validations **Route** is compatible with two possible third party libraries, **"zod"** and **"yup"**. By default, ```createRocketKit()``` uses **"zod"** as the validation library.
+  The schemas attribute allows you to validate the type and format of the data that enters and leaves the **Route**, to handle these validations **Route** is compatible with two possible third party libraries, **"zod"** and **"yup"**. By default, `createRocketKit()` uses **"zod"** as the validation library.
 
-   ``` typescript
+  ```typescript
   // "path file" ~ ./src/app/api/route.ts
-  import { Route } from '@/libs/Route';
+  import { Route } from "@/libs/Route";
 
-   // End Point GET basic
-  export  const  POST =  Route({
+  // End Point GET basic
+  export const POST = Route({
     schemas: {
       body: Schema,
       query: Schema,
@@ -106,8 +124,8 @@ The schemas attribute allows you to validate the type and format of the data tha
       headers: Schema,
       response: Schema,
     },
-    Handler(req,  reply,  context)  {
-      return  reply.json({  message:  "Hello World!"  },  {  status:  201  });
+    Handler(req, reply, context) {
+      return reply.json({ message: "Hello World!" }, { status: 201 });
     },
   });
   ```
