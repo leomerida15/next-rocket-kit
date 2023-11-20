@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdoc_rocket=self.webpackChunkdoc_rocket||[]).push([[2489],{6053:e=>{e.exports=JSON.parse('{"permalink":"/next-rocket-kit/blog/tags/hola","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);
