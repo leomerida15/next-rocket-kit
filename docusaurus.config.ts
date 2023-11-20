@@ -8,7 +8,7 @@ const config: Config = {
   favicon: "/img/favicon-rocket.svg",
 
   // Set the production url of your site here
-  url: "https://your-docusaurus-test-site.com",
+  url: "https://next-rocket-kit.github.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
@@ -17,6 +17,7 @@ const config: Config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "facebook", // Usually your GitHub org/user name.
   projectName: "docusaurus", // Usually your repo name.
+  deploymentBranch: "deployment",
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
