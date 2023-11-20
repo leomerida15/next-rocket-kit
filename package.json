@@ -1,8 +1,9 @@
 {
-  "version": "0.8.2",
+  "version": "1.0.0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "homepage": "https://leomerida15.github.io/next-rocket-kit/",
   "repository": {
     "type": "git",
     "url": "https://github.com/leomerida15/next-rocket-kit"
