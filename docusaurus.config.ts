@@ -8,16 +8,17 @@ const config: Config = {
   favicon: "/img/favicon-rocket.svg",
 
   // Set the production url of your site here
-  url: "https://next-rocket-kit.github.io",
+  url: "https://next-rocket-kit.github.io/",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/",
+  baseUrl: "/next-rocket-kit",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "facebook", // Usually your GitHub org/user name.
-  projectName: "docusaurus", // Usually your repo name.
+  organizationName: "leomerida15", // Usually your GitHub org/user name.
+  projectName: "next-rocket-kit", // Usually your repo name.
   deploymentBranch: "deployment",
+  trailingSlash: false,
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -43,16 +44,8 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        },
+
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -76,9 +69,8 @@ const config: Config = {
           position: 'left',
           label: 'document',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/leomerida15/next-rocket-kit',
           label: 'GitHub',
           position: 'right',
         },
@@ -88,7 +80,7 @@ const config: Config = {
       logo: {
         alt: "LatamEarth Logo",
         src: "/img/latamearth-white.webp",
-        href: "https://latamearth.com",
+        href: "https://www.instagram.com/latamearth/",
         width: 160,
         height: "auto",
       },
@@ -110,23 +102,12 @@ const config: Config = {
               label: "GitHub Issues",
               href: "https://github.com/leomerida15/next-rocket-kit/issues",
             },
-            // {
-            //   label: "Discord",
-            //   href: "https://discordapp.com/invite/docusaurus",
-            // },
-            // {
-            //   label: "Twitter",
-            //   href: "https://twitter.com/docusaurus",
-            // },
+
           ],
         },
         {
           title: "More",
           items: [
-            // {
-            //   label: "Blog",
-            //   to: "/blog",
-            // },
             {
               label: "GitHub",
               href: "https://github.com/leomerida15/next-rocket-kit",

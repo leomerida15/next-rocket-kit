@@ -10,9 +10,9 @@ This tool helps to quickly create an endpoint using the **next.js** **API** fold
 
 - We create the rocket to be able to access the tools in the kit.
 
-  "path file" ~ ./libs/rocketKit/tools
-
   ```typescript
+  // "path file" ~ ./libs/rocketKit/tools
+
   import { createRocket } from "next-rocket-kit";
 
   export const { onRoute, http, OpenApi } = createRocket();
@@ -21,7 +21,7 @@ This tool helps to quickly create an endpoint using the **next.js** **API** fold
 - We define the router which should be used on the server side only, for this next.js gives us the comment function ```use serve```.
 
   ```typescript
-  "path file" ~ ./libs/rocketKit/Route
+  // "path file" ~ ./libs/rocketKit/Route
 
   "use serve"
 
@@ -33,7 +33,7 @@ This tool helps to quickly create an endpoint using the **next.js** **API** fold
 - We define barrel file.
 
   ```typescript
-  "path file" ~ ./libs/rocketKit/index
+  // "path file" ~ ./libs/rocketKit/index
 
   export * from './tools';
   export * from './Route';
