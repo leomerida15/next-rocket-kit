@@ -3,6 +3,7 @@ import { ZodType, ZodTypeDef, ZodObject, TypeOf } from "zod";
 import { IZodSchemasValid } from "./types";
 import { IZodRequestFactoryResp } from "./types";
 import ValidAndFormat from "./ValidAndFormat";
+import { reqState } from "../types";
 
 export const requestFactory = async <
 	B extends ZodType<any, ZodTypeDef, any>,
@@ -29,11 +30,19 @@ export const requestFactory = async <
 
 	const body = await validAndFormat.body();
 
+	const state = Object.getOwnPropertySymbols(nativeRequest)
+		.filter((S) => S.toString().includes("state"))
+		.map((S) => {
+			//@ts-ignore
+			return nativeRequest[S];
+		})[0] as reqState;
+
 	const resp = {
 		getHeaders: () => Headers,
 		getContext: () => Context,
 		getQuery: (keys: Array<keyof TypeOf<Q> | string>) => Query(keys),
 		getBody: () => body,
+		getState: () => state,
 	};
 
 	return { ...resp, ...nativeRequest } as IZodRequestFactoryResp<B, C, Q>;

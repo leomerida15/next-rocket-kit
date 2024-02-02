@@ -29,12 +29,24 @@ export const requestFactory = async <
 
 	const body = await validAndFormat.body();
 
+	const state = Object.getOwnPropertySymbols(nativeRequest)
+		.filter((S) => S.toString().includes("state"))
+		.map((S) => {
+			//@ts-ignore
+			return nativeRequest[S];
+		})[0] as NextRequest;
+
 	const resp = {
 		getHeaders: () => Headers,
 		getContext: () => Context,
 		getQuery: (keys: Array<keyof InferType<Q> | string>) => Query(keys),
 		getBody: () => body,
+		getState: () => state,
 	};
 
-	return { ...resp, ...nativeRequest } as IYupRequestFactoryResp<B, C, Q>;
+	return { ...resp, ...nativeRequest } as unknown as IYupRequestFactoryResp<
+		B,
+		C,
+		Q
+	>;
 };

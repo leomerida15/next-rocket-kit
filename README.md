@@ -3,7 +3,6 @@
 
 This package is intended to make it easy to build back-end applications in the framework, **next.js** with, using the **app** directory.
 
-> **Note 🧪:** ***"Version compatible Next.js v14.0.0"***  Due to the sudden changes that next.js has in its internal functioning, we will leave here the most modern version with full compatibility with the next-rocket-kit
 
 # Index
 
@@ -103,6 +102,8 @@ This tool helps to quickly create an endpoint using the **next.js** **API** fold
   - req.getContext(): return context include path params.
 
   - req.getHeaders(): return headers.
+
+  - req.getState(): return native NextRequest methods.
 
   - reply: used to reply to the client and gives access to all the native methods of **NextResponse**.
 

@@ -1,8 +1,10 @@
 import { OasKeys } from "./docs/types";
 import { resolverObj } from "./resolvers";
 import { ResolverKeys } from "./resolvers/types";
+
 export * from "./resolvers/types";
 export * from "./docs/types";
+export type * from "./httpStatus";
 
 /**
  * Configuration object for the Rocket-kit.

@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { requestFactory } from "./requestFactory";
 import { responseFactory } from "./responseFactory";
 import { zodRoute } from "./route";
+import { reqState } from "../types";
 
 export type ZodResponseFactoryType = typeof responseFactory;
 
@@ -54,6 +55,7 @@ export interface IZodRequestFactoryResp<
 	getContext: () => TypeOf<C>;
 	getQuery: (queryArray: string[]) => TypeOf<Q>;
 	getBody: () => TypeOf<B>;
+	getState: () => reqState;
 }
 
 export interface IZodRouteParams<

@@ -4,6 +4,7 @@ import { ResolverKeys } from "./resolvers";
 import { Http } from "./httpStatus";
 import { createConfig } from "./config";
 import { Oas } from "./docs";
+import { onPrisma } from "./prisma/onPrisma";
 
 /**
  * CreateRocket: generates a kit to workr back end in next.js with app folder
@@ -25,5 +26,5 @@ export const createRocket = <
 
 	const OpenApi = Oas[config.oas];
 
-	return { Route, onRoute, Http, OpenApi };
+	return { Route, onRoute, Http, OpenApi, onPrisma };
 };
