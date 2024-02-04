@@ -4,7 +4,7 @@ import { ResolverKeys } from "./resolvers/types";
 
 export * from "./resolvers/types";
 export * from "./docs/types";
-export type * from "./httpStatus";
+export * from "./httpStatus";
 
 /**
  * Configuration object for the Rocket-kit.

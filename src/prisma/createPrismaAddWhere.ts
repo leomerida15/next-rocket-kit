@@ -1,15 +1,13 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClientCustom } from "./types";
 
-export const prismaAddGlobalWhere = (prisma: PrismaClient, where: object) => {
+export const prismaAddGlobalWhere = <PrismaClient extends PrismaClientCustom>(
+	prisma: PrismaClient,
+	where: object,
+) => {
 	for (const KeyModel in prisma) {
 		if (!Object.prototype.hasOwnProperty.call(prisma, KeyModel)) continue;
 
 		if (/[$_]*/i.test(KeyModel)) return;
-
-		console.clear();
-		console.log("keys");
-		console.log("Object.keys(prisma)", Object.keys(prisma));
-		console.log(Object.keys(prisma[KeyModel as keyof PrismaClient]));
 
 		// @ts-ignore
 		prisma[KeyModel as keyof PrismaClient].findFirst = (
