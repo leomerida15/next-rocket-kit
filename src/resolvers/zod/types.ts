@@ -4,7 +4,6 @@ import { headers } from "next/headers";
 import { requestFactory } from "./requestFactory";
 import { responseFactory } from "./responseFactory";
 import { zodRoute } from "./route";
-import { reqState } from "../types";
 
 export type ZodResponseFactoryType = typeof responseFactory;
 

@@ -3,14 +3,13 @@
 
 This package is intended to make it easy to build back-end applications in the framework, **next.js** with, using the **app** directory.
 
-
 # Index
 
 - [Configuration object 🔩🔧.](#configuration-object-)
 - [Tools we offer 🔧🔨.](#tools-we-offer-)
 - [Route Module 🔃.](#route-module-)
   - [Configuration object for Route.](#configuration-object-for-route)
-
+- [Prisma client creator 🔃.](#prisma-client-creator-)
 - [Http Module 📝.](#http-module-)
 - [OpenAPI Module 📝.](#openapi-module-)
   - [OpenApi Example.](#openapi-example)
