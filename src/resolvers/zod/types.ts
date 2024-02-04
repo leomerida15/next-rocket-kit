@@ -55,7 +55,6 @@ export interface IZodRequestFactoryResp<
 	getContext: () => TypeOf<C>;
 	getQuery: (queryArray: string[]) => TypeOf<Q>;
 	getBody: () => TypeOf<B>;
-	getState: () => reqState;
 }
 
 export interface IZodRouteParams<

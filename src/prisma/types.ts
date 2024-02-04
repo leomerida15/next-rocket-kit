@@ -1,6 +1,8 @@
-export type PrismaClientCustom = new () => any;
+export interface PrismaClientCustom {
+	new (...art: any): any;
+}
 
-export interface Global<PrismaClient extends PrismaClientCustom> {
+export interface Global<PrismaClient> {
 	prisma?: PrismaClient;
 }
 

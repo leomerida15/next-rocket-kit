@@ -3,7 +3,6 @@ import { headers } from "next/headers";
 import { AnyObject, ISchema, InferType, ObjectSchema } from "yup";
 import { yupRoute } from "./route";
 import { responseFactory } from "./responseFactory";
-import { reqState } from "../types";
 
 export type YupResponseFactoryType = typeof responseFactory;
 
@@ -92,7 +91,6 @@ export interface IYupRequestFactoryResp<
 	getContext: () => InferType<C>;
 	getQuery: (queriesArray: string[]) => InferType<Q>;
 	getBody: () => InferType<B>;
-	getState: () => reqState;
 }
 
 export type YupRouteType = typeof yupRoute;

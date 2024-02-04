@@ -1,8 +1,8 @@
-import { PrismaClientCustom, onPrismaParamsOptios, Global } from "./types";
+import { onPrismaParamsOptios, Global } from "./types";
 import { prismaAddGlobalWhere } from "./createPrismaAddWhere";
 
-export const onPrisma = <PrismaClient extends PrismaClientCustom>(
-	PrismaClientNative: PrismaClient,
+export const onPrisma = <PrismaClient>(
+	PrismaClientNative: new () => PrismaClient,
 	options?: onPrismaParamsOptios,
 ) => {
 	if ((global as Global<PrismaClient>).prisma)

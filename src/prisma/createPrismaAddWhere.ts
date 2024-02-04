@@ -1,6 +1,4 @@
-import { PrismaClientCustom } from "./types";
-
-export const prismaAddGlobalWhere = <PrismaClient extends PrismaClientCustom>(
+export const prismaAddGlobalWhere = <PrismaClient>(
 	prisma: PrismaClient,
 	where: object,
 ) => {

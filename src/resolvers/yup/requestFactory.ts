@@ -41,12 +41,11 @@ export const requestFactory = async <
 		getContext: () => Context,
 		getQuery: (keys: Array<keyof InferType<Q> | string>) => Query(keys),
 		getBody: () => body,
-		getState: () => state,
 	};
 
-	return { ...resp, ...nativeRequest } as unknown as IYupRequestFactoryResp<
-		B,
-		C,
-		Q
-	>;
+	return {
+		...resp,
+		...nativeRequest,
+		...state,
+	} as unknown as IYupRequestFactoryResp<B, C, Q>;
 };

@@ -3,7 +3,6 @@ import { ZodType, ZodTypeDef, ZodObject, TypeOf } from "zod";
 import { IZodSchemasValid } from "./types";
 import { IZodRequestFactoryResp } from "./types";
 import ValidAndFormat from "./ValidAndFormat";
-import { reqState } from "../types";
 
 export const requestFactory = async <
 	B extends ZodType<any, ZodTypeDef, any>,
@@ -35,15 +34,18 @@ export const requestFactory = async <
 		.map((S) => {
 			//@ts-ignore
 			return nativeRequest[S];
-		})[0] as reqState;
+		})[0] as NextRequest;
 
 	const resp = {
 		getHeaders: () => Headers,
 		getContext: () => Context,
 		getQuery: (keys: Array<keyof TypeOf<Q> | string>) => Query(keys),
 		getBody: () => body,
-		getState: () => state,
 	};
 
-	return { ...resp, ...nativeRequest } as IZodRequestFactoryResp<B, C, Q>;
+	return {
+		...resp,
+		...nativeRequest,
+		...state,
+	} as unknown as IZodRequestFactoryResp<B, C, Q>;
 };
