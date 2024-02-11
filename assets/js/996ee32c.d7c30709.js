@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocument=self.webpackChunkdocument||[]).push([[2816],{3672:e=>{e.exports=JSON.parse('{"permalink":"/next-rocket-kit/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":4,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

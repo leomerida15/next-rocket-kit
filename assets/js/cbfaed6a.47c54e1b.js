@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocument=self.webpackChunkdocument||[]).push([[7388],{9507:e=>{e.exports=JSON.parse('{"label":"docusaurus","permalink":"/next-rocket-kit/blog/tags/docusaurus","allTagsPath":"/next-rocket-kit/blog/tags","count":4,"unlisted":false}')}}]);

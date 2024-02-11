@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocument=self.webpackChunkdocument||[]).push([[4112],{6792:e=>{e.exports=JSON.parse('{"label":"hello","permalink":"/next-rocket-kit/blog/tags/hello","allTagsPath":"/next-rocket-kit/blog/tags","count":2,"unlisted":false}')}}]);
