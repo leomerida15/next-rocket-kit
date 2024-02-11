@@ -4,19 +4,19 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: "Next Rocket Kit 🚀",
-  tagline: "This package is intended to make it easy to build back-end applications in the framework, <h1>Next.js</h1> with, using the <a href=`https://nextjs.org/docs/app` target=`_blank`>app</a> directory.",
+  tagline: "This package is intended to make it easy to build back-end applications in the framework, Next.js with, using the app directory.",
   favicon: "🚀",
 
   // Set the production url of your site here
-  url: "https://your-docusaurus-test-site.com",
+  url: "https://leomerida15.github.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/",
+  baseUrl: "/next-rocket-kit",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "facebook", // Usually your GitHub org/user name.
-  projectName: "docusaurus", // Usually your repo name.
+  organizationName: "leomerida15", // Usually your GitHub org/user name.
+  projectName: "next-rocket-kit", // Usually your repo name.
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -30,6 +30,13 @@ const config: Config = {
   },
 
   trailingSlash: true,
+
+  themes: ['@docusaurus/theme-mermaid'],
+  // In order for Mermaid code blocks in Markdown to work,
+  // you also need to enable the Remark plugin with this option
+  markdown: {
+    mermaid: true,
+  },
 
   presets: [
     [

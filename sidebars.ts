@@ -20,6 +20,11 @@ const sidebars: SidebarsConfig = {
     // },
     {
       type: "doc",
+      label: "Get started",
+      id: "get-started",
+    },    
+    {
+      type: "doc",
       label: "Configuration Object 🔩🔧",
       id: "configuration-object",
     },

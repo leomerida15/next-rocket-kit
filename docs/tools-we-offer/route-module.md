@@ -61,6 +61,10 @@ export const GET = Route({
 - **Schema (Schema valid):**
   The schemas attribute allows you to validate the type and format of the data that enters and leaves the **Route**, to handle these validations **Route** is compatible with two possible third party libraries, **"zod"** and **"yup"**. By default, `createRocketKit()` uses **"zod"** as the validation library.
 
+
+  > **Note 📦:** the route params is in header.
+
+
   ```typescript
   // "path file" ~ ./src/app/api/route.ts
   import { Route } from "@/utils/Route";
@@ -86,11 +90,52 @@ The Schemas attribute uses a life cycle to execute the validations, the order of
 graph LR
 A(headers) --> B(context) --> C(query) --> D(body) --> E(Handler) --> F(response)
 ```
+ 
+## Examples
 
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
+### End Point with route parameters
+
+#### Schemas
+  ```typescript
+  // "path file" ~  ./src/app/api/example/exampleSchemas.ts
+  import { z } from "zod";
+
+  export const ExampleHeadersSchema = z.object({
+    params: z.object({
+      id: z.string().transform(Number)
+    })
+  });
+
+  export type ExampleHeadersSchemaType = z.infer<typeof ExampleHeadersSchema>
+
+
+  export const ExampleBodySchema = z.object({
+    name: z.string(),
+  });
+
+  export type ExampleBodySchemaType = z.infer<typeof ExampleBodySchema>
+
+  ```
+#### EndPoint
+  ```typescript
+  // "path file" ~ ./src/app/api/example/[id]/route.ts
+  import { Route } from "@/utils/Route";
+  import { ExampleHeadersSchema, ExampleBodySchema } from '../exampleSchemas'
+
+  // End Point PUT basic
+  export const PUT = Route({
+    schemas: {
+      body: ExampleBodySchema,
+      headers: ExampleHeadersSchema,
+    },
+    Handler(req, reply, context) {
+      const { id } = req.getHeaders().params
+
+      return reply.json({ message: "Hello World!" }, { status: 201 });
+    },
+  });
+  ```
+
+
+
+
