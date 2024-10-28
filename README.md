@@ -1,6 +1,21 @@
 
 # next-rocket-kit 🚀
 
+> **Note 🧪:**  I will start the migration for next.js versions 15 and higher.
+
+ and in the future we will migrate this package to the @rocket-kit family, where there is also @rocket-kit/edge for limit functions in supabase and we will have new functions
+
+***@rocket-kit/next*** new functions:
+
+- swagger automatic documentation
+- creator of ***server actions***
+- it will be divided into ***@rocket-kit/next/server*** and ***@rocket-kit/next/client*** in the client we will add hooks like
+
+- useUrls that types and generates only a json that is packaged in a hook
+- add @form-instant by auto generate forms
+
+
+
 This package is intended to make it easy to build back-end applications in the framework, **next.js** with, using the **app** directory.
 
 # Index
