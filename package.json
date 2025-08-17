@@ -15,10 +15,11 @@
         "url": "https://github.com/leomerida15/next-rocket-kit/issues"
     },
     "scripts": {
-        "start": "tsdx watch",
-        "build": "tsdx build",
-        "test": "tsdx test",
-        "lint": "tsdx lint"
+        "start": "bun run --watch",
+        "build": "bun run bunpack.build",
+        "test": "bun run bunpack.test",
+        "lint": "eslint src --ext .ts,.tsx",
+        "format": "prettier --write ."
     },
     "devDependencies": {
         "@types/bun": "^1.2.20",
