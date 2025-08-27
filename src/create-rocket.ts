@@ -1,6 +1,6 @@
 import { createRoute } from './route';
 import { createAction } from './action';
-import { zodActionResolver } from './zod-action-resolver';
+import { zodResolver } from './resolver';
 import { RocketConfig, ResolverFunction, RouteConfig } from './types';
 
 /**
@@ -18,7 +18,7 @@ export const createRocket = <Rs extends ResolverFunction>(config: RocketConfig<R
         Route: <TBody = any, TParams = any, TQuery = any>(
             config: RouteConfig<TBody, TParams, TQuery>,
         ) => {
-            return createRoute(resolver)(config);
+            return createRoute(resolver.route)(config);
         },
 
         /**
@@ -28,7 +28,7 @@ export const createRocket = <Rs extends ResolverFunction>(config: RocketConfig<R
             handler: (input: TInput) => Promise<TOutput> | TOutput;
             schema?: any;
         }) => {
-            return createAction(zodActionResolver)(config);
+            return createAction(zodResolver.action)(config);
         },
     };
 

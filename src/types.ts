@@ -37,10 +37,13 @@ export interface Request<TBody = any, TParams = any, TQuery = any> extends NextR
 // Reply como alias de NextResponse
 export type Reply = NextResponse;
 
-export type ResolverFunction = <TBody = any, TParams = any, TQuery = any>(
-    req: NextRequest,
-    schemas?: ValidationSchemas<TBody, TParams, TQuery>,
-) => Promise<Request<TBody, TParams, TQuery>>;
+export type ResolverFunction = {
+    route: <TBody = any, TParams = any, TQuery = any>(
+        req: NextRequest,
+        schemas?: ValidationSchemas<TBody, TParams, TQuery>,
+    ) => Promise<Request<TBody, TParams, TQuery>>;
+    action: <TInput = any>(input: any, schema?: any) => Promise<TInput>;
+};
 
 // Configuración para createRocket
 export interface RocketConfig<Rs extends ResolverFunction> {

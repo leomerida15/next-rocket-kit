@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { createRocket, createAction, zodActionResolver, zodResolver } from './index';
+import { createRocket, createAction, zodResolver } from './index';
 
 // Definir schemas para validación
 const CreateUserSchema = z.object({
@@ -43,7 +43,7 @@ export const createUserAction = rocket.Action({
 });
 
 // Ejemplo 2: Server Action con validación usando createAction directamente
-export const updateUserAction = createAction(zodActionResolver)({
+export const updateUserAction = createAction(zodResolver.action)({
     schema: UpdateUserSchema,
     handler: async (input) => {
         // input está tipado como { id: string, name?: string, email?: string, age?: number }

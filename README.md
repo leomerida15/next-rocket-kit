@@ -116,7 +116,7 @@ export const getUserById = rocket.Route({
 
 ```typescript
 import { z } from 'zod';
-import { createRocket, createAction, zodActionResolver } from 'next-rocket-kit';
+import { createRocket, createAction, zodResolver } from 'next-rocket-kit';
 
 const rocket = createRocket({
     resolver: zodResolver,
@@ -141,7 +141,7 @@ export const createUserAction = rocket.Action({
 });
 
 // Server Action con validación usando createAction directamente
-export const updateUserAction = createAction(zodActionResolver)({
+export const updateUserAction = createAction(zodResolver.action)({
     schema: z.object({
         id: z.string().uuid(),
         name: z.string().min(2).optional(),
