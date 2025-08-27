@@ -30,10 +30,10 @@
         /* Paths */
         "baseUrl": "./",
         "paths": {
-            "*": ["src/*"]
+            "*": ["v1/*"]
         }
     },
 
-    "include": ["src/**/*", "test/**/*"],
+    "include": ["v1/**/*", "test/**/*"],
     "exclude": ["node_modules", "dist", "old"]
 }

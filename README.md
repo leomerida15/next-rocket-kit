@@ -1,370 +1,334 @@
+# Next Rocket Kit
 
-# next-rocket-kit 🚀
+Una librería moderna para Next.js que simplifica el manejo de rutas API con validación automática usando Zod y generación de documentación OpenAPI/Swagger.
 
-> **Note 🧪:**  I will start the migration for next.js versions 15 and higher.
+## Características
 
- and in the future we will migrate this package to the @rocket-kit family, where there is also @rocket-kit/edge for limit functions in supabase and we will have new functions
+-   ✅ **Validación automática** con Zod para body, params y query parameters
+-   ✅ **Server Actions** con validación automática
+-   ✅ **Tipado TypeScript** completo con inferencia automática
+-   ✅ **Manejo de errores** integrado
+-   ✅ **Documentación automática** OpenAPI/Swagger
+-   ✅ **Compatibilidad** con Next.js 15+ y React 19
+-   ✅ **API simple** y fácil de usar
 
-***@rocket-kit/next*** new functions:
+## Instalación
 
-- swagger automatic documentation
-- creator of ***server actions***
-- it will be divided into ***@rocket-kit/next/server*** and ***@rocket-kit/next/client*** in the client we will add hooks like
-
-- useUrls that types and generates only a json that is packaged in a hook
-- add @form-instant by auto generate forms
-
-
-
-This package is intended to make it easy to build back-end applications in the framework, **next.js** with, using the **app** directory.
-
-# Index
-
-- [Configuration object 🔩🔧.](#configuration-object-)
-- [Tools we offer 🔧🔨.](#tools-we-offer-)
-- [Route Module 🔃.](#route-module-)
-  - [Configuration object for Route.](#configuration-object-for-route)
-- [Prisma client creator 🔃.](#prisma-client-creator-)
-- [Http Module 📝.](#http-module-)
-- [OpenAPI Module 📝.](#openapi-module-)
-  - [OpenApi Example.](#openapi-example)
-  - [Recommendations for use with third-party packages to OpeanApi.](#recommendations-for-use-with-third-party-packages-to-opeanapi)
-
-# Configuration object 🔩🔧
-
-This object is used to define types and versions of the tools.
-
-- Default object.
-In the event that the user does not place a configuration object, this will be the object that will be used by default in the kit.
-
-  ```typescript
-  import  { ConfigObject }  from  "next-rocket-kit";
-
-  const configObjet: ConfigObject = {
-    resolver: "zod",
-    oas: "3.1"
-  };
-    ```
-
-# Tools we offer 🔧🔨
-
-> **Note 🧪:**      It is important to note that we will all be adding new tools to the kit in the future.
-
-## Route Module 🔃
-
-This tool helps to quickly create an endpoint using the **next.js** **API** folder.
-
-- We create the rocket to be able to access the tools in the kit.
-
-  "path file" ~ ./libs/rocketKit/tools
-
-```typescript
-  import { createRocket } from "next-rocket-kit";
-
-  export const { onRoute, http, OpenApi } = createRocket();
+```bash
+npm install next-rocket-kit zod
+# o
+bun add next-rocket-kit zod
 ```
 
-- We define the router which should be used on the server side only, for this next.js gives us the comment function ```use serve```.
+## Uso Básico
 
-  ```typescript
-  // "path file" ~ ./libs/rocketKit/Route
-
-  "use serve"
-
-  import { onRoute } from "./tools";
-
-  export const { Route } = onRoute();
-  ```
-
-- We define barrel file.
-
-  ```typescript
-  // "path file" ~ ./libs/rocketKit/index
-
-  export * from './tools';
-  export * from './Route';
-  ```
-
-- We define a basic endPoint.
-
-  ```typescript
-  // "path file" ~ ./src/app/api/Route.ts
-
-  import { Route } from "@/libs/rocketKit";
-
-  // End Point GET basic
-  export const GET = Route({
-    Handler(req, reply, context) {
-      return reply.json({ message: "Hello World!" }, { status: 201 });
-    },
-  });
-  ```
-
-## Configuration object for Route
-
-- **Handler:** is the function that is executed when calling the end point. With the rocket **Route** it is much easier for us to create endpoints, such as a GET method endpoint.
-  The handler function receives three parameters to handle and control the request video cycle, these parameters are as follows.
-
-  - req: Everything that arrives from the client and gives access to all the native methods of **NextRequest**.
-
-  Rocket functions in req.
-
-  - req.getBody(): return body.
-
-  - req.getQuery(): return queries.
-
-  - req.getContext(): return context include path params.
-
-  - req.getHeaders(): return headers.
-
-  - reply: used to reply to the client and gives access to all the native methods of **NextResponse**.
-
-  - context (The native context of **nextjs**)
-
-- **Schema (Schema valid):**
-  The schemas attribute allows you to validate the type and format of the data that enters and leaves the **Route**, to handle these validations **Route** is compatible with two possible third party libraries, **"zod"** and **"yup"**. By default, `createRocketKit()` uses **"zod"** as the validation library.
-
-  ```typescript
-  // "path file" ~ ./src/app/api/route.ts
-  import { Route } from "@/libs/Route";
-
-  // End Point GET basic
-  export const POST = Route({
-    schemas: {
-      body: Schema,
-      query: Schema,
-      context: Schema,
-      headers: Schema,
-      response: Schema,
-    },
-    Handler(req, reply, context) {
-      return reply.json({ message: "Hello World!" }, { status: 201 });
-    },
-  });
-  ```
-
-The Schemas attribute uses a life cycle to execute the validations, the order of that life cycle is as follows.
-
-```mermaid
-graph LR
-A(headers) --> B(context) --> C(query) --> D(body) --> E(Handler) --> F(response)
-```
-
-## Prisma client creator 🔃
-
-This tool helps to quickly create an PrismaClient.
-
-  "path file" ~ ./libs/rocketKit/tools
+### 1. Crear una instancia de Rocket
 
 ```typescript
-  import { createRocket } from "next-rocket-kit";
+import { createRocket, zodResolver } from 'next-rocket-kit';
 
-  export const { onPrisma } = createRocket();
-```
-
-```typescript
-  import { PrismaClient } from "@prisma/client";
-  import { onPrisma } from "./rocket";
-
-  export const { prisma } = onPrisma(PrismaClient);
-```
-
-Global where in the select.
-
-```typescript
-  import { PrismaClient } from "@prisma/client";
-  import { onPrisma } from "./rocket";
-
-  export const { prisma } = onPrisma(PrismaClient, {
-    where: { delete_at: null }
-  });
-```
-
-## Http Module 📝
-
-The Http tool will help you manage http status, to better manage and organize your request responses.
-> **Note 📦:** rocket-kit uses the [http-status-codes](https://www.npmjs.com/package/http-status-codes) package
-
-``` typescript
-const Http = {
-  ReasonPhrases,
-  StatusCodes,
-  getReasonPhrase,
-  getStatusCode,
-};
- ```
-
-```typescript
-// "path file" ~ ./libs/rocketKit
-import  { createRocket }  from  "next-rocket-kit";
-
-export  const  { Http } =  createRocket();
-  ```
-
-  ``` typescript
-// "path file" ~ ./src/app/api/route.ts
-import { Http } from '@/libs/rocketKit';
-import { Route } from '@/libs/Route';
-
-// End Point GET basic
-export const GET = Route({
-    Handler(req,  reply,  context)  {
-      return  reply.json({
-        message:  Http.ReasonPhrases.OK, // "OK"
-      },
-      {
-        status:  Http.StatusCodes.OK, // 200
-      });
-    },
+const rocket = createRocket({
+    resolver: zodResolver, // Usar zodResolver por defecto
+    openApiFormat: 'openapi', // o 'swagger'
 });
-  ```
+```
 
-## OpenAPI Module 📝
-
-   OpenAPI allows you to create a json in openapi ["3.0"](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md) or ["3.1"](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md) format, compatible with tools like **swagger**, **postman** and anyone that receives the openapi format.
-> **Note 📦:** rocket-kit uses the [openapi3-ts](https://www.npmjs.com/package/openapi3-ts) package.
-
-To define the openapi version you must use the **oas** attribute in the kit configuration object.
-
-  ```typescript
-// "path file" ~ ./libs/rocketKit
-import  { createRocket }  from  "next-rocket-kit";
-
-export  const  { Http, OpenApi } =  createRocket();
-
-  ```
-
-### OpenApi Example
-
-  ```typescript
-// "path file" ~ ./libs/rocketKit
-import  { createRocket } from  "next-rocket-kit";
-
-export  const  { Http, OpenApi } =  createRocket();
-
-  ```
-
-  ```typescript
-import { OpenApi } from "./libs/rocketkt";
-
-// declare info and openapi version.
-const openApi = OpenApi({
-    openapi: "3.0.3", // or 3.1.0
-    info: {
-      title: "example",
-      description: "string",
-      termsOfService: "string",
-      contact: {
-        name: "Author",
-      },
-      license: {
-        name: "MIT",
-      },
-      version: "1.0.0",
-    },
-});
-
- openApi.addSchema("User", {
-    type: "object",
-    properties: {
-      id: {
-        type: "string",
-      },
-      name: {
-        type: "string",
-      },
-    },
- });
-
- openApi.addPath("/items", {
-    description: "return item list",
-    post: {
-    description: "get items",
-    summary: "get items",
-    requestBody: {
-      description: "body",
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/User" },
-        },
-      },
-    },
-    responses: {
-        200: {
-          description: "ok",
-          content: {
-            "application/json": {
-            schema: {
-                type: "object",
-                properties: {
-                  id: {
-                    type: "string",
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
- });
-
-// return json string
-openApi.getSpecAsJson()
-// or return yml stirng
-openApi.getSpecAsYaml()
-
-  ```
-
-### Recommendations for use with third-party packages to OpeanApi
-
-How use OpenApi with "zod".
-
-- [@anatine/zod-openapi](https://www.npmjs.com/package/@anatine/zod-openapi): With this package we can reuse the "zod" validation schemas that you should already be using in the Route schema field to validate the body or some other field of the request.
+### 2. Definir schemas de validación
 
 ```typescript
-import { OpenApi } from "@/libs/rocketKit"
-import { generateSchema, extendZodWithOpenApi } from '@anatine/zod-openapi';
 import { z } from 'zod';
 
-// extend zod
-extendZodWithOpenApi(z);
+const UserSchema = z.object({
+    name: z.string().min(2, 'Name must be at least 2 characters'),
+    email: z.string().email('Invalid email format'),
+    age: z.number().min(18, 'Must be at least 18 years old'),
+});
 
+const QueryParamsSchema = z.object({
+    page: z
+        .string()
+        .optional()
+        .transform((val) => (val ? parseInt(val) : 1)),
+    limit: z
+        .string()
+        .optional()
+        .transform((val) => (val ? parseInt(val) : 10)),
+});
 
-// declare info and openapi version.
-const openApi = OpenApi({
-    openapi: "3.0.3", // or 3.1.0
-    info: {
-        title: "example",
-        description: "string",
-        termsOfService: "string",
-        version: "1.0.0",
-        contact: {
-          name: "Author",
-        },
-        license: {
-          name: "MIT",
-        },
+const ParamsSchema = z.object({
+    userId: z.string().uuid('Invalid user ID format'),
+});
+```
+
+### 3. Crear rutas con validación
+
+```typescript
+import { NextResponse } from 'next/server';
+
+export const createUser = rocket.Route({
+    handler: async (req, reply) => {
+        // Obtener datos validados con tipado automático
+        const body = req.getBody(); // Tipado como UserSchema
+        const queryParams = req.getQueryParams(); // Tipado como QueryParamsSchema
+
+        // Tu lógica aquí
+        console.log('Creating user:', body);
+        console.log('Query params:', queryParams);
+
+        return NextResponse.json(
+            {
+                success: true,
+                user: body,
+                message: 'User created successfully',
+            },
+            { status: 201 },
+        );
+    },
+    schema: {
+        body: UserSchema,
+        queryParams: QueryParamsSchema,
     },
 });
 
-const ItemZodSchema = z
-  .object({
-    id: z.string().uuid().nonempty().openapi({
-      title: "Item ID",
-      description: "A UUID generated by the server",
-    }),
-    name: z.string().min(2),
-  })
-  .openapi({
-    title: "Item",
-    description: "A item schema",
-  });
+export const getUserById = rocket.Route({
+    handler: async (req, reply) => {
+        const params = req.getParams(); // Tipado como ParamsSchema
 
-const ItemOpenAPiSchema = generateSchema(ItemZodSchema);
-
-openApi.addSchema("Item", ItemOpenAPiSchema);
-
+        return NextResponse.json({
+            success: true,
+            userId: params.userId,
+            user: {
+                id: params.userId,
+                name: 'John Doe',
+                email: 'john@example.com',
+            },
+        });
+    },
+    schema: {
+        params: ParamsSchema,
+    },
+});
 ```
 
-> **Note 🧪:**      In the case of **Yup** we have not found a package that meets the standards we are looking for, we remain attentive to options proposed by the community.
+## Server Actions
+
+### Crear Server Actions con validación
+
+```typescript
+import { z } from 'zod';
+import { createRocket, createAction, zodActionResolver } from 'next-rocket-kit';
+
+const rocket = createRocket({
+    resolver: zodResolver,
+});
+
+// Definir schema para validación
+const CreateUserSchema = z.object({
+    name: z.string().min(2, 'Name must be at least 2 characters'),
+    email: z.string().email('Invalid email format'),
+    age: z.number().min(18, 'Must be at least 18 years old'),
+});
+
+// Server Action con validación usando rocket.Action
+export const createUserAction = rocket.Action({
+    schema: CreateUserSchema,
+    handler: async (input) => {
+        // input está tipado como { name: string, email: string, age: number }
+        console.log('Creating user:', input.name, input.email, input.age);
+
+        return { success: true, user: input };
+    },
+});
+
+// Server Action con validación usando createAction directamente
+export const updateUserAction = createAction(zodActionResolver)({
+    schema: z.object({
+        id: z.string().uuid(),
+        name: z.string().min(2).optional(),
+        email: z.string().email().optional(),
+    }),
+    handler: async (input) => {
+        // input está tipado como { id: string, name?: string, email?: string }
+        return { success: true, user: input };
+    },
+});
+```
+
+### 4. Usar en Next.js App Router
+
+```typescript
+// app/api/users/route.ts
+import { createUser } from './handlers';
+
+export const POST = createUser;
+```
+
+```typescript
+// app/api/users/[userId]/route.ts
+import { getUserById } from './handlers';
+
+export const GET = getUserById;
+```
+
+## API Reference
+
+### createRocket(config)
+
+Crea una instancia de Rocket con la configuración especificada.
+
+```typescript
+interface RocketConfig {
+    resolver?: typeof zodResolver; // Resolver personalizado (opcional)
+    openApiFormat?: 'swagger' | 'openapi'; // Formato de documentación
+}
+```
+
+### rocket.Route(config)
+
+Crea una ruta con validación automática.
+
+```typescript
+interface RouteConfig<TBody, TParams, TQuery> {
+    handler: RouteHandler<TBody, TParams, TQuery>;
+    schema?: ValidationSchemas;
+}
+```
+
+### Request Methods
+
+El objeto `req` extendido incluye estos métodos:
+
+-   `req.getBody()` - Obtiene el body validado
+-   `req.getParams()` - Obtiene los parámetros de URL validados
+-   `req.getQueryParams()` - Obtiene los query parameters validados
+
+### ValidationSchemas
+
+```typescript
+interface ValidationSchemas<TBody = any, TParams = any, TQuery = any> {
+    body?: z.ZodSchema<TBody>;
+    params?: z.ZodSchema<TParams>;
+    queryParams?: z.ZodSchema<TQuery>;
+}
+```
+
+### ActionConfig
+
+```typescript
+interface ActionConfig<TInput = any, TOutput = any, TSchema = any> {
+    handler: (input: TInput) => Promise<TOutput> | TOutput;
+    schema?: TSchema;
+}
+```
+
+### ValidationResolver
+
+```typescript
+type ValidationResolver<TInput = any, TSchema = any> = (
+    input: any,
+    schema?: TSchema,
+) => Promise<TInput>;
+```
+
+## Generación de Documentación
+
+```typescript
+const docs = rocket.generateDocs({
+    title: 'My API',
+    version: '1.0.0',
+    description: 'API documentation for my Next.js application',
+    servers: [
+        {
+            url: 'http://localhost:3000',
+            description: 'Development server',
+        },
+    ],
+});
+
+// Guardar como JSON
+console.log(JSON.stringify(docs, null, 2));
+```
+
+## Manejo de Errores
+
+La librería maneja automáticamente los errores de validación y retorna respuestas apropiadas:
+
+```json
+{
+    "error": "Validation Error",
+    "message": "Body validation failed: Name must be at least 2 characters, Invalid email format"
+}
+```
+
+## Ejemplos Avanzados
+
+### Validación Compleja
+
+```typescript
+const ComplexSchema = z.object({
+    user: z.object({
+        profile: z.object({
+            avatar: z.string().url().optional(),
+            bio: z.string().max(500).optional(),
+        }),
+        preferences: z.array(z.string()).optional(),
+    }),
+    metadata: z.record(z.any()).optional(),
+});
+
+export const updateUser = rocket.Route({
+    handler: async (req, reply) => {
+        const body = req.getBody(); // Tipado completo
+
+        return NextResponse.json({ success: true });
+    },
+    schema: { body: ComplexSchema },
+});
+```
+
+### Query Parameters con Transformación
+
+```typescript
+const SearchSchema = z.object({
+    q: z.string().min(1, 'Search query is required'),
+    filters: z
+        .string()
+        .optional()
+        .transform((val) => (val ? JSON.parse(val) : {})),
+    sort: z.enum(['asc', 'desc']).default('asc'),
+});
+
+export const searchUsers = rocket.Route({
+    handler: async (req, reply) => {
+        const query = req.getQueryParams();
+        // query.filters ya está parseado como objeto
+        // query.sort tiene valor por defecto 'asc'
+
+        return NextResponse.json({ results: [] });
+    },
+    schema: { queryParams: SearchSchema },
+});
+```
+
+## Contribuir
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
+
+## Changelog
+
+### v2.0.0
+
+-   ✨ Nueva arquitectura modular
+-   ✨ Validación automática con Zod
+-   ✨ Tipado TypeScript completo
+-   ✨ Generación de documentación OpenAPI/Swagger
+-   ✨ Manejo de errores mejorado
+-   ✨ Compatibilidad con Next.js 15+ y React 19
