@@ -48,7 +48,7 @@ export const zodResolver = {
                     body,
                     'Body validation failed',
                 );
-            } catch (error) {
+            } catch {
                 extendedReq._validatedBody = await validateData(
                     schemas.body,
                     {},
