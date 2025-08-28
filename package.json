@@ -4,7 +4,7 @@
     "main": "dist/index.js",
     "name": "@rocket-kit/next",
     "author": "leomerida15",
-    "module": "dist/next-rocket-kit.esm.js",
+    "module": "dist/index.js",
     "typings": "dist/index.d.ts",
     "homepage": "https://leomerida15.github.io/next-rocket-kit/",
     "repository": {
