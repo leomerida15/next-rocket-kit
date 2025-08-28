@@ -1,6 +1,5 @@
 import { createRoute } from './route';
 import { createAction } from './action';
-import { zodResolver } from './resolver';
 import { RocketConfig, ResolverFunction, RouteConfig } from './types';
 
 /**
@@ -28,7 +27,7 @@ export const createRocket = <Rs extends ResolverFunction>(config: RocketConfig<R
             handler: (input: TInput) => Promise<TOutput> | TOutput;
             schema?: any;
         }) => {
-            return createAction(zodResolver.action)(config);
+            return createAction(resolver.action)(config);
         },
     };
 

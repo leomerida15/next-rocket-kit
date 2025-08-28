@@ -1,8 +1,9 @@
 import { RouteConfig, RouteHandler, Request, Reply, ResolverFunction } from './types';
-import { zodResolver } from './resolver';
 
 // Función que crea Route con resolver dinámico
-export const createRoute = <TResolver extends ResolverFunction['route'] = typeof zodResolver.route>(
+export const createRoute = <
+    TResolver extends ResolverFunction['route'] = ResolverFunction['route'],
+>(
     resolver: TResolver,
 ) => {
     return <TBody = any, TParams = any, TQuery = any>(
