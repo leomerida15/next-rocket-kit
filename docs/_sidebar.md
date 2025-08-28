@@ -1,0 +1,15 @@
+<!-- docs/_sidebar.md -->
+
+- [📖 Cover](cover)
+- [🏠 Home](/)
+- [🚀 Get Started](get-started)
+- [📚 API Reference](api-reference)
+    - [createRocket](api-reference#createrocket)
+    - [Route](api-reference#route)
+    - [Action](api-reference#action)
+- [🔧 Resolvers](resolvers)
+- [📝 Examples](examples)
+    - [Basic Route](examples#basic-route)
+    - [Route with Validation](examples#route-with-validation)
+    - [Server Action](examples#server-action)
+    - [Complete Example](examples#complete-example)
