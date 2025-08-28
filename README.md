@@ -3,20 +3,18 @@
 
 > **Note 🧪:**  I will start the migration for next.js versions 15 and higher.
 
- and in the future we will migrate this package to the @rocket-kit family, where there is also @rocket-kit/edge for limit functions in supabase and we will have new functions
+I finally have version 2. It has the following important items:
 
-***@rocket-kit/next*** new functions:
+1. It was migrated to the @rocket-kit/next package.
+2. The API is not identical; some names were changed, such as getContext().params -> getPatams or getQuery -> getQueryParams.
+3. The new version was split into two packages: resolver and rocket.
+4. The Persian Zod resolver is less than 13 KB, and rocket is less than 25 KB.
 
-- swagger automatic documentation
-- creator of ***server actions***
-- it will be divided into ***@rocket-kit/next/server*** and ***@rocket-kit/next/client*** in the client we will add hooks like
+This is important; it went from 244 KB to less than 25 KB.
 
-- useUrls that types and generates only a json that is packaged in a hook
-- add @form-instant by auto generate forms
+5. The http-code and openApi features were temporarily removed. The plan is to integrate them into version 2.5, which I plan to release soon. This addition is subject to your feedback. A survey will be created in the repository so you can give your opinion on whether these features are missing.
 
 
-
-This package is intended to make it easy to build back-end applications in the framework, **next.js** with, using the **app** directory.
 
 # Index
 
