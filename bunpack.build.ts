@@ -15,9 +15,8 @@ Bun.build({
     sourcemap: 'external',
     target: 'browser',
     // Optimizations for smallest bundle size
-    splitting: false,
     // External dependencies
-    external: ['next', 'openapi3-ts', 'http-status-codes'],
+    external: ['next', 'zod'],
     // Define environment
     define: {
         'process.env.NODE_ENV': '"production"',

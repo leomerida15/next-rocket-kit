@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { NextRequest } from 'next/server';
 import { ValidationSchemas, Request } from './types';
-import { ValidationResolver } from './action';
 
 /**
  * Resolver unificado que contiene funciones para Route y Action
