@@ -1,4 +1,4 @@
-import { RouteConfig, RouteHandler, Request, Reply, ResolverFunction } from './types';
+import { RouteConfig, RouteHandler, Reply, ResolverFunction } from './types';
 
 // Función que crea Route con resolver dinámico
 export const createRoute = <

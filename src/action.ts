@@ -1,6 +1,3 @@
-import { RouteConfig, RouteHandler, Request, Reply, ResolverFunction } from './types';
-import { zodResolver } from './resolver';
-
 // Función que crea Route con resolver dinámico
 // Tipo para el handler de Server Action
 export type ActionHandler<TInput = any, TOutput = any> = (
@@ -25,19 +22,14 @@ export const createAction = <TResolver extends ValidationResolver = any>(resolve
         config: ActionConfig<TInput, TOutput, TSchema>,
     ): ActionHandler<TInput, TOutput> => {
         return async (input: any): Promise<TOutput> => {
-            try {
-                // Si hay resolver y schema, validar el input
-                if (resolver && config.schema) {
-                    const validatedInput = await resolver(input, config.schema);
-                    return await config.handler(validatedInput);
-                }
-
-                // Si no hay resolver o schema, usar el input directamente
-                return await config.handler(input as TInput);
-            } catch (error) {
-                // Re-lanzar errores
-                throw error;
+            // Si hay resolver y schema, validar el input
+            if (resolver && config.schema) {
+                const validatedInput = await resolver(input, config.schema);
+                return await config.handler(validatedInput);
             }
+
+            // Si no hay resolver o schema, usar el input directamente
+            return await config.handler(input as TInput);
         };
     };
 };
