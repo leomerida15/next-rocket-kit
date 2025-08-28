@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
     build:
-        name: Build, lint, and test on ${{ matrix.os }}
+        name: resolver/zod Build, lint, and test on ${{ matrix.os }}
 
         runs-on: ${{ matrix.os }}
         strategy:
