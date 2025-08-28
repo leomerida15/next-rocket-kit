@@ -1,334 +1,463 @@
-# Next Rocket Kit
+# @rocket-kit/next Documentation
 
-Una librería moderna para Next.js que simplifica el manejo de rutas API con validación automática usando Zod y generación de documentación OpenAPI/Swagger.
+A powerful Next.js API toolkit that provides type-safe route handlers and server actions with Zod validation, eliminating the need for manual request parsing and validation.
 
-## Características
+## 🚀 Getting Started
 
--   ✅ **Validación automática** con Zod para body, params y query parameters
--   ✅ **Server Actions** con validación automática
--   ✅ **Tipado TypeScript** completo con inferencia automática
--   ✅ **Manejo de errores** integrado
--   ✅ **Documentación automática** OpenAPI/Swagger
--   ✅ **Compatibilidad** con Next.js 15+ y React 19
--   ✅ **API simple** y fácil de usar
-
-## Instalación
+### Installation
 
 ```bash
-npm install next-rocket-kit zod
-# o
-bun add next-rocket-kit zod
+npm install @rocket-kit/next @rocket-kit/next-resolver-zod zod
 ```
 
-## Uso Básico
-
-### 1. Crear una instancia de Rocket
+### Basic Setup
 
 ```typescript
-import { createRocket, zodResolver } from 'next-rocket-kit';
-
-const rocket = createRocket({
-    resolver: zodResolver, // Usar zodResolver por defecto
-    openApiFormat: 'openapi', // o 'swagger'
-});
-```
-
-### 2. Definir schemas de validación
-
-```typescript
-import { z } from 'zod';
-
-const UserSchema = z.object({
-    name: z.string().min(2, 'Name must be at least 2 characters'),
-    email: z.string().email('Invalid email format'),
-    age: z.number().min(18, 'Must be at least 18 years old'),
-});
-
-const QueryParamsSchema = z.object({
-    page: z
-        .string()
-        .optional()
-        .transform((val) => (val ? parseInt(val) : 1)),
-    limit: z
-        .string()
-        .optional()
-        .transform((val) => (val ? parseInt(val) : 10)),
-});
-
-const ParamsSchema = z.object({
-    userId: z.string().uuid('Invalid user ID format'),
-});
-```
-
-### 3. Crear rutas con validación
-
-```typescript
-import { NextResponse } from 'next/server';
-
-export const createUser = rocket.Route({
-    handler: async (req, reply) => {
-        // Obtener datos validados con tipado automático
-        const body = req.getBody(); // Tipado como UserSchema
-        const queryParams = req.getQueryParams(); // Tipado como QueryParamsSchema
-
-        // Tu lógica aquí
-        console.log('Creating user:', body);
-        console.log('Query params:', queryParams);
-
-        return NextResponse.json(
-            {
-                success: true,
-                user: body,
-                message: 'User created successfully',
-            },
-            { status: 201 },
-        );
-    },
-    schema: {
-        body: UserSchema,
-        queryParams: QueryParamsSchema,
-    },
-});
-
-export const getUserById = rocket.Route({
-    handler: async (req, reply) => {
-        const params = req.getParams(); // Tipado como ParamsSchema
-
-        return NextResponse.json({
-            success: true,
-            userId: params.userId,
-            user: {
-                id: params.userId,
-                name: 'John Doe',
-                email: 'john@example.com',
-            },
-        });
-    },
-    schema: {
-        params: ParamsSchema,
-    },
-});
-```
-
-## Server Actions
-
-### Crear Server Actions con validación
-
-```typescript
-import { z } from 'zod';
-import { createRocket, createAction, zodResolver } from 'next-rocket-kit';
+import { createRocket } from '@rocket-kit/next';
+import { zodResolver } from '@rocket-kit/next-resolver-zod';
 
 const rocket = createRocket({
     resolver: zodResolver,
 });
+```
 
-// Definir schema para validación
-const CreateUserSchema = z.object({
-    name: z.string().min(2, 'Name must be at least 2 characters'),
-    email: z.string().email('Invalid email format'),
-    age: z.number().min(18, 'Must be at least 18 years old'),
+## ⚙️ createRocket
+
+The `createRocket` function is the main entry point of the library. It creates a Rocket instance with the specified resolver for validation.
+
+### Parameters
+
+- `config.resolver`: The validation resolver to use (e.g., `zodResolver`)
+- `config.openApiFormat` (optional): Format for OpenAPI documentation ('swagger' | 'openapi')
+
+### Example
+
+```typescript
+import { createRocket } from '@rocket-kit/next';
+import { zodResolver } from '@rocket-kit/next-resolver-zod';
+
+const rocket = createRocket({
+    resolver: zodResolver,
+    openApiFormat: 'openapi',
+});
+```
+
+## 🛣️ Route Function
+
+The `Route` function creates type-safe API route handlers with automatic validation and parsing.
+
+### Basic Usage
+
+```typescript
+import { rocket } from './rocket-config';
+import { z } from 'zod';
+
+const userSchema = z.object({
+    name: z.string(),
+    email: z.string().email(),
 });
 
-// Server Action con validación usando rocket.Action
-export const createUserAction = rocket.Action({
-    schema: CreateUserSchema,
-    handler: async (input) => {
-        // input está tipado como { name: string, email: string, age: number }
-        console.log('Creating user:', input.name, input.email, input.age);
+export const POST = rocket.Route({
+    schema: {
+        body: userSchema,
+    },
+    handler: async (req, reply) => {
+        const body = req.getBody(); // Type-safe body
+        const params = req.getParams(); // Type-safe params
+        const query = req.getQueryParams(); // Type-safe query params
 
-        return { success: true, user: input };
+        // Your logic here
+        return reply.json({ success: true, data: body });
     },
 });
-
-// Server Action con validación usando createAction directamente
-export const updateUserAction = createAction(zodResolver.action)({
-    schema: z.object({
-        id: z.string().uuid(),
-        name: z.string().min(2).optional(),
-        email: z.string().email().optional(),
-    }),
-    handler: async (input) => {
-        // input está tipado como { id: string, name?: string, email?: string }
-        return { success: true, user: input };
-    },
-});
 ```
 
-### 4. Usar en Next.js App Router
+### Schema Configuration
 
-```typescript
-// app/api/users/route.ts
-import { createUser } from './handlers';
+The `schema` object accepts three optional properties:
 
-export const POST = createUser;
-```
-
-```typescript
-// app/api/users/[userId]/route.ts
-import { getUserById } from './handlers';
-
-export const GET = getUserById;
-```
-
-## API Reference
-
-### createRocket(config)
-
-Crea una instancia de Rocket con la configuración especificada.
-
-```typescript
-interface RocketConfig {
-    resolver?: typeof zodResolver; // Resolver personalizado (opcional)
-    openApiFormat?: 'swagger' | 'openapi'; // Formato de documentación
-}
-```
-
-### rocket.Route(config)
-
-Crea una ruta con validación automática.
-
-```typescript
-interface RouteConfig<TBody, TParams, TQuery> {
-    handler: RouteHandler<TBody, TParams, TQuery>;
-    schema?: ValidationSchemas;
-}
-```
+- `body`: Zod schema for request body validation
+- `params`: Zod schema for route parameters validation
+- `queryParams`: Zod schema for query parameters validation
 
 ### Request Methods
 
-El objeto `req` extendido incluye estos métodos:
+The extended request object provides three main methods:
 
--   `req.getBody()` - Obtiene el body validado
--   `req.getParams()` - Obtiene los parámetros de URL validados
--   `req.getQueryParams()` - Obtiene los query parameters validados
+#### `getBody()`
 
-### ValidationSchemas
+Returns the validated and parsed request body.
 
 ```typescript
-interface ValidationSchemas<TBody = any, TParams = any, TQuery = any> {
-    body?: z.ZodSchema<TBody>;
-    params?: z.ZodSchema<TParams>;
-    queryParams?: z.ZodSchema<TQuery>;
-}
+const body = req.getBody(); // Returns TBody
 ```
 
-### ActionConfig
+#### `getParams()`
+
+Returns the validated route parameters.
 
 ```typescript
-interface ActionConfig<TInput = any, TOutput = any, TSchema = any> {
-    handler: (input: TInput) => Promise<TOutput> | TOutput;
-    schema?: TSchema;
-}
+const params = req.getParams(); // Returns TParams
 ```
 
-### ValidationResolver
+#### `getQueryParams()`
+
+Returns the validated query parameters.
 
 ```typescript
-type ValidationResolver<TInput = any, TSchema = any> = (
-    input: any,
-    schema?: TSchema,
-) => Promise<TInput>;
+const query = req.getQueryParams(); // Returns TQuery
 ```
 
-## Generación de Documentación
+### Complete Route Example
 
 ```typescript
-const docs = rocket.generateDocs({
-    title: 'My API',
-    version: '1.0.0',
-    description: 'API documentation for my Next.js application',
-    servers: [
-        {
-            url: 'http://localhost:3000',
-            description: 'Development server',
-        },
-    ],
+import { rocket } from './rocket-config';
+import { z } from 'zod';
+
+const createUserSchema = z.object({
+    name: z.string().min(2),
+    email: z.string().email(),
+    age: z.number().min(18),
 });
 
-// Guardar como JSON
-console.log(JSON.stringify(docs, null, 2));
+const userParamsSchema = z.object({
+    id: z.string().uuid(),
+});
+
+const userQuerySchema = z.object({
+    include: z.enum(['profile', 'posts']).optional(),
+});
+
+export const POST = rocket.Route({
+    schema: {
+        body: createUserSchema,
+        params: userParamsSchema,
+        queryParams: userQuerySchema,
+    },
+    handler: async (req, reply) => {
+        const body = req.getBody(); // { name: string, email: string, age: number }
+        const params = req.getParams(); // { id: string }
+        const query = req.getQueryParams(); // { include?: 'profile' | 'posts' }
+
+        // All data is type-safe and validated
+        const user = await createUser(body);
+
+        return reply.json({ success: true, user });
+    },
+});
 ```
 
-## Manejo de Errores
+## ⚡ Action Function
 
-La librería maneja automáticamente los errores de validación y retorna respuestas apropiadas:
+The `Action` function creates type-safe server actions with automatic validation.
 
-```json
-{
-    "error": "Validation Error",
-    "message": "Body validation failed: Name must be at least 2 characters, Invalid email format"
-}
-```
-
-## Ejemplos Avanzados
-
-### Validación Compleja
+### Basic Usage
 
 ```typescript
-const ComplexSchema = z.object({
-    user: z.object({
-        profile: z.object({
-            avatar: z.string().url().optional(),
-            bio: z.string().max(500).optional(),
+import { rocket } from './rocket-config';
+import { z } from 'zod';
+
+const createPostSchema = z.object({
+    title: z.string().min(1),
+    content: z.string().min(10),
+});
+
+export const createPost = rocket.Action({
+    schema: createPostSchema,
+    handler: async (input) => {
+        // input is type-safe and validated
+        const post = await db.posts.create(input);
+        return post;
+    },
+});
+```
+
+### Action without Schema
+
+```typescript
+export const simpleAction = rocket.Action({
+    handler: async (input) => {
+        // input is any type when no schema is provided
+        return { message: 'Success' };
+    },
+});
+```
+
+## 🔧 Zod Integration
+
+@rocket-kit/next is built with Zod v4 and provides seamless integration for type-safe validation.
+
+### What are Resolvers?
+
+Resolvers are functions that handle the validation and parsing of incoming data. They take raw input and a schema, then return validated and typed data.
+
+### zodResolver
+
+The `zodResolver` is the primary resolver that uses Zod schemas for validation.
+
+```typescript
+import { zodResolver } from '@rocket-kit/next-resolver-zod';
+
+const rocket = createRocket({
+    resolver: zodResolver,
+});
+```
+
+### Custom Resolvers
+
+You can create custom resolvers for different validation libraries:
+
+```typescript
+import { ResolverFunction } from '@rocket-kit/next';
+
+const customResolver: ResolverFunction = {
+    route: async (req, schemas) => {
+        // Custom validation logic
+        return extendedReq;
+    },
+    action: async (input, schema) => {
+        // Custom validation logic
+        return validatedInput;
+    },
+};
+
+const rocket = createRocket({
+    resolver: customResolver,
+});
+```
+
+### Zod Schema Examples
+
+```typescript
+import { z } from 'zod';
+
+// Basic validation
+const userSchema = z.object({
+    name: z.string().min(2),
+    email: z.string().email(),
+    age: z.number().min(18).max(120),
+});
+
+// Complex validation
+const orderSchema = z.object({
+    items: z.array(
+        z.object({
+            id: z.string().uuid(),
+            quantity: z.number().positive(),
+            price: z.number().positive(),
         }),
-        preferences: z.array(z.string()).optional(),
+    ),
+    shipping: z.object({
+        address: z.string(),
+        city: z.string(),
+        country: z.string(),
     }),
-    metadata: z.record(z.any()).optional(),
+    payment: z.object({
+        method: z.enum(['credit_card', 'paypal']),
+        cardNumber: z
+            .string()
+            .regex(/^\d{16}$/)
+            .optional(),
+    }),
 });
 
-export const updateUser = rocket.Route({
-    handler: async (req, reply) => {
-        const body = req.getBody(); // Tipado completo
-
-        return NextResponse.json({ success: true });
-    },
-    schema: { body: ComplexSchema },
-});
+// Conditional validation
+const conditionalSchema = z
+    .object({
+        type: z.enum(['individual', 'company']),
+        name: z.string(),
+        email: z.string().email(),
+        companyName: z.string().optional(),
+        taxId: z.string().optional(),
+    })
+    .refine(
+        (data) => {
+            if (data.type === 'company') {
+                return data.companyName && data.taxId;
+            }
+            return true;
+        },
+        {
+            message: 'Company name and tax ID are required for company accounts',
+        },
+    );
 ```
 
-### Query Parameters con Transformación
+## 📝 Examples
+
+### Complete API Route Example
 
 ```typescript
-const SearchSchema = z.object({
-    q: z.string().min(1, 'Search query is required'),
-    filters: z
-        .string()
-        .optional()
-        .transform((val) => (val ? JSON.parse(val) : {})),
-    sort: z.enum(['asc', 'desc']).default('asc'),
+// app/api/users/[id]/posts/route.ts
+import { rocket } from '@/lib/rocket-config';
+import { z } from 'zod';
+
+const createPostSchema = z.object({
+    title: z.string().min(1).max(100),
+    content: z.string().min(10),
+    tags: z.array(z.string()).optional(),
 });
 
-export const searchUsers = rocket.Route({
-    handler: async (req, reply) => {
-        const query = req.getQueryParams();
-        // query.filters ya está parseado como objeto
-        // query.sort tiene valor por defecto 'asc'
+const postParamsSchema = z.object({
+    id: z.string().uuid(),
+});
 
-        return NextResponse.json({ results: [] });
+const postQuerySchema = z.object({
+    page: z.coerce.number().min(1).default(1),
+    limit: z.coerce.number().min(1).max(50).default(10),
+    sort: z.enum(['created_at', 'title']).default('created_at'),
+});
+
+export const POST = rocket.Route({
+    schema: {
+        body: createPostSchema,
+        params: postParamsSchema,
+        queryParams: postQuerySchema,
     },
-    schema: { queryParams: SearchSchema },
+    handler: async (req, reply) => {
+        const body = req.getBody();
+        const params = req.getParams();
+        const query = req.getQueryParams();
+
+        const post = await createPost({
+            ...body,
+            userId: params.id,
+        });
+
+        return reply.json({ success: true, post });
+    },
+});
+
+export const GET = rocket.Route({
+    schema: {
+        params: postParamsSchema,
+        queryParams: postQuerySchema,
+    },
+    handler: async (req, reply) => {
+        const params = req.getParams();
+        const query = req.getQueryParams();
+
+        const posts = await getPosts({
+            userId: params.id,
+            page: query.page,
+            limit: query.limit,
+            sort: query.sort,
+        });
+
+        return reply.json({ success: true, posts });
+    },
 });
 ```
 
-## Contribuir
+### Server Action Example
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+```typescript
+// app/actions/user-actions.ts
+import { rocket } from '@/lib/rocket-config';
+import { z } from 'zod';
 
-## Licencia
+const updateProfileSchema = z.object({
+    name: z.string().min(2).optional(),
+    email: z.string().email().optional(),
+    bio: z.string().max(500).optional(),
+    avatar: z.string().url().optional(),
+});
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
+export const updateProfile = rocket.Action({
+    schema: updateProfileSchema,
+    handler: async (input) => {
+        const userId = await getCurrentUserId();
+        const updatedUser = await updateUser(userId, input);
+        return updatedUser;
+    },
+});
 
-## Changelog
+const deleteAccountSchema = z.object({
+    password: z.string().min(8),
+    confirm: z.literal('DELETE'),
+});
 
-### v2.0.0
+export const deleteAccount = rocket.Action({
+    schema: deleteAccountSchema,
+    handler: async (input) => {
+        if (input.confirm !== 'DELETE') {
+            throw new Error('Confirmation required');
+        }
 
--   ✨ Nueva arquitectura modular
--   ✨ Validación automática con Zod
--   ✨ Tipado TypeScript completo
--   ✨ Generación de documentación OpenAPI/Swagger
--   ✨ Manejo de errores mejorado
--   ✨ Compatibilidad con Next.js 15+ y React 19
+        const userId = await getCurrentUserId();
+        await deleteUser(userId, input.password);
+        return { success: true };
+    },
+});
+```
+
+### Error Handling
+
+```typescript
+export const POST = rocket.Route({
+    schema: {
+        body: userSchema,
+    },
+    handler: async (req, reply) => {
+        try {
+            const body = req.getBody();
+            const user = await createUser(body);
+            return reply.json({ success: true, user });
+        } catch (error) {
+            if (error instanceof ValidationError) {
+                return reply.json(
+                    { error: 'Validation failed', details: error.details },
+                    { status: 400 },
+                );
+            }
+
+            return reply.json({ error: 'Internal server error' }, { status: 500 });
+        }
+    },
+});
+```
+
+### TypeScript Benefits
+
+```typescript
+// Full type inference
+const userSchema = z.object({
+    name: z.string(),
+    email: z.string().email(),
+    age: z.number(),
+});
+
+type User = z.infer<typeof userSchema>; // Automatically inferred
+
+export const POST = rocket.Route({
+    schema: {
+        body: userSchema,
+    },
+    handler: async (req, reply) => {
+        const body = req.getBody(); // Type: User
+        // TypeScript will provide full IntelliSense
+        console.log(body.name); // ✅ Type-safe
+        console.log(body.email); // ✅ Type-safe
+        console.log(body.age); // ✅ Type-safe
+        // console.log(body.invalid); // ❌ TypeScript error
+    },
+});
+```
+
+---
+
+## 🎯 Key Benefits
+
+- **🔒 Type Safety**: Full TypeScript support with automatic type inference
+- **✅ Validation**: Automatic request validation using Zod v4
+- **🚀 Performance**: Zero runtime overhead for type checking
+- **📚 Documentation**: Built-in OpenAPI documentation generation
+- **🛠️ Developer Experience**: Excellent IntelliSense and error messages
+- **🔧 Flexibility**: Support for custom resolvers and validation libraries
+
+## 📦 Package Information
+
+- **Version**: 2.0.2
+- **License**: MIT
+- **Repository**: [GitHub](https://github.com/leomerida15/next-rocket-kit)
+- **NPM**: [@rocket-kit/next](https://www.npmjs.com/package/@rocket-kit/next)
