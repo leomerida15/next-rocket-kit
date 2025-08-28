@@ -6,6 +6,9 @@
     "author": "leomerida15",
     "module": "dist/index.js",
     "typings": "dist/index.d.ts",
+    "publishConfig": {
+        "access": "public"
+    },
     "homepage": "https://github.com/leomerida15/next-rocket-kit/tree/resolver/zod",
     "repository": {
         "type": "git",
